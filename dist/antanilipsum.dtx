@@ -1,0 +1,2686 @@
+% \iffalse meta-comment
+%<*internal>
+\iffalse
+%</internal>
+%<*readme>
+The `antanilipsum` package is an italian blind text generator that ouputs _supercazzole_, mocking nonsense phrases from the movie series Amici Miei, directed by Mario Monicelli.  
+
+The package is a modified version of `kantlipsum` by Enrico Gregorio that uses paragraphs from a variety of sources, including original movies, examples from the GitHub package [esseks/monicelli](https://github.com/esseks/monicelli), and online generators like [AntanIpsum](https://antanipsum.com).  
+
+The package GitHub repo [AlphaJack/antanilipsum](https://github.com/AlphaJack/antanilipsum) is aimed to facilitate the creation of a custom blind text generator by simply replacing the paragraph files used to build this package.  
+  
+This released is based on `kantilipsum` version 0.8a.
+
+Copyright 2020 Jack Coleman
+
+It may be distributed and/or modified under the conditions of the LaTeX Project Public License (LPPL), either version 1.3c of this license or (at your option) any later version.  The latest version of this license is in the file https://www.latex-project.org/lppl.txt.
+The author is Jack Coleman and is reachable at the email address `alphajack AT tuta DOT io`.
+
+This work has the LPPL maintenance status "author-maintained".
+
+This work consists of the following files:
+
+- README.md (this file)
+- antanilipsum.dtx
+- antanilipsum.pdf
+
+and of the derived file
+
+- antanilipsum.sty
+
+To install the distribution run
+
+```
+lualatex antanilipsum.dtx
+```
+
+It is also possible to use `tex` or `pdflatex` for the task, but `lualatex` [is advised](https://github.com/matlab2tikz/matlab2tikz/wiki/TeX-capacity-exceeded,-sorry) when using a large amount of paragraphs.
+
+%</readme>
+%<*internal>
+\fi
+\def\nameofplainTeX{plain}
+\ifx\fmtname\nameofplainTeX\else
+  \expandafter\begingroup
+\fi
+%</internal>
+%<*install>
+\input l3docstrip.tex
+\keepsilent
+\askforoverwritefalse
+\preamble
+---------------------------------------------------------------
+The antanilipsum package --- Generate sentences in Conte Mascetti's style
+Maintained by Jack Coleman
+E-mail: alphajack AT tuta DOT io
+Released under the LaTeX Project Public License v1.3c or later
+See https://www.latex-project.org/lppl.txt
+---------------------------------------------------------------
+\endpreamble
+\postamble
+Copyright (C) 2020 by
+  Jack Coleman
+  alphajack AT tuta DOT io
+
+It may be distributed and/or modified under the conditions of the
+LaTeX Project Public License (LPPL), either version 1.3c of this
+license or (at your option) any later version.  The latest version
+of this license is in the file
+    https://www.latex-project.org/lppl.txt
+This work consists of the file  antanilipsum.dtx
+          and the derived files antanilipsum.pdf,
+                                antanilipsum.sty and
+                                antanilipsum.ins.
+\endpostamble
+\usedir{tex/latex/antanilipsum}
+\generate{
+  \file{\jobname.sty}{\from{\jobname.dtx}{package}}
+}
+%</install>
+%<install>\endbatchfile
+%<*internal>
+\usedir{source/latex/antanilipsum}
+\generate{
+  \file{\jobname.ins}{\from{\jobname.dtx}{install}}
+}
+\nopreamble\nopostamble
+\usedir{doc/latex/antanilipsum}
+\generate{
+  \file{README.md}{\from{\jobname.dtx}{readme}}
+}
+\ifx\fmtname\nameofplainTeX
+  \expandafter\endbatchfile
+\else
+  \expandafter\endgroup
+\fi
+%</internal>
+%<*driver|package>
+\RequirePackage{expl3}[2019/07/01]
+\RequirePackage{xparse}
+%</driver|package>
+%<*driver>
+\documentclass[a4paper,full]{l3doc}
+\usepackage{bookmark}
+\usepackage{antanilipsum}
+\usepackage[english,italian]{babel}
+\begin{document}
+  \DocInput{\jobname.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \GetFileInfo{\jobname.sty}
+%
+% \title{The \textsf{antanilipsum} package\\ Dummy text in Mascettian style}
+%
+% \author{^^A
+%  Jack Coleman\thanks
+%    {^^A
+%      The author can be reached at the following email address:
+%        \texttt{alphajack AT tuta DOT io}^^A
+%    }^^A
+% }
+%
+% \date{Released \filedate}
+%
+% \maketitle
+%
+%\changes{v0.8}{2020-05-05}{First released version}
+%
+% \begin{documentation}
+%
+% \section{Introduction}
+%
+% The \pkg{antanilipsum} package is a modified version of \pkg{kantlipsum} that
+% offers the same functionalities, but instead nonsense in Kantian style, 
+% it typesets paragraphs of \emph{supercazzole}, italian nonsense phrases 
+% composed of invented words, which are used as a joke in order to mock 
+% or confuse the person to whom the phrase is addressed. The text it uses comes
+% not only from the original \href{https://www.youtube.com/watch?v=_9MTJw5ctVE}{\emph{Amici Miei}} movie series, but also from fan
+% produced content and online generators like \href{https://antanipsum.com}{\emph{AntanIpsum}}.
+%
+%
+% \section{Example}
+% \begin{otherlanguage}{italian}
+% \antani[1-3]
+% \end{otherlanguage}
+% \section{Options}
+%
+% The package has four document options, the first two of which are
+% alternative to each other:
+% \begin{itemize}[font=\ttfamily]
+% \item[par$\,\vert\,$nopar] With the default \texttt{par} all pieces
+% of text will be ended by a \cs{par} command; specifying \texttt{par}
+% is optional; the option \texttt{nopar} will not add this \cs{par} at
+% the end of each fragment of Mascettian phrases.
+% \item[numbers] Each piece of Mascettian phrases will be preceded by its
+% number (such as in ``1~\textbullet~Lei ha clacsonato. Tarapia tapioco, 
+% prematurata alla supercazzola o scherziamo? No, mi permetta\dots''), 
+% which can be useful for better control of what is produced.
+% \item[index] Each paragraph will generate an index entry; a
+% |\makeindex| command will be needed, with a suitable package for
+% making the index, and |\printindex| for printing it. However the
+% index entry may be off by one, since the |\index| command is issued
+% at the beginning of the paragraph. Also there is no guarantee that
+% the indexed word really belongs to the paragraph.
+% \end{itemize}
+%
+% \section{Commands}
+%
+% The commands provided by the package are:
+% \begin{itemize}[font=\ttfamily]
+% \item[\cs{antani}] This command takes an optional argument which can
+% be of the form \texttt{[42]} (that is, only one integer) or
+% \texttt{[3-14]} (that is, two integers separated by a hyphen); as in
+% \pkg{lipsum}, \verb|\antani[42]|, \verb|\antani[3-14]| and \verb|\antani|
+% will produce the 42nd pseudomascettian paragraph, the paragraphs from
+% the 3rd to the 14th, and those from the 1st to the 7th,
+% respectively.
+% \item[\cs{antani*}] The same as before, see later for the difference.
+% \item[\cs{antanidef}] This command takes two arguments, a control
+% sequence and an integer; the call \verb|\antanidef{\mytext}{200}| will
+% store in \cs{mytext} the 200th paragraph of pseudomascettian text
+% provided by this package.
+% \end{itemize}
+% The commands \cs{antani}, \cs{antani*} and \cs{antanidef} take a further
+% optional argument; with \verb|\antani[42][1-3]| just the first three
+% sentences of paragraph number~42 will be printed; ranges outside the
+% actual number of sentences will be ignored. The requested sentences
+% are stored, in the case of \cs{antanidef}.
+%
+% What's the difference between \cs{antani} and \cs{antani*}? The normal
+% version will respect the given package option; that is, if
+% \texttt{par} is in force, \verb|\antani[1-2]| will produce \emph{two}
+% paragraphs, while \verb|\antani*[1-2]| will only produce a big chunk
+% of text without issuing any \verb|\par| command. The logic is
+% reversed if the \texttt{nopar} option has been given.
+%
+% By the way, 200 is the number of available pieces; if one exceeds
+% the limit, nothing will be printed. Thus \verb|\antani[200-300]| will
+% print only \emph{one} paragraph. However, printing all paragraphs
+% with the standard ten point size Computer Modern font and the
+% \pkg{article} class fills more than fifty pages, so it seems that
+% the supply of text can be sufficient.
+%
+% \subsection*{Note}
+%
+% This package aims to only modify the text used by the \pkg{kantlipsum} package
+% and in no way tries to alter how it operates. A public repository is available with
+% a bash script that allows to easily build a custom version of this package by simply 
+% replacing the text file it uses.
+%
+% The original \pkg{kantlipsum} is just an exercise for practicing with \LaTeX3
+% syntax. It uses the ``experimental'' packages made available by the
+% \LaTeX3 team. Many thanks to Joseph Wright, Bruno Le Floch and Frank
+% Mittelbach for suggesting improvements.
+%
+% \subsection*{Changes from \pkg{kantlipsum} 0.8a}
+%
+% Modified the documentation according to the new package.
+%
+% Paragraphs and index words have been removed from \emph{kantlipsum.dtx} 
+% and are now added every time the build script is run.
+%
+% \end{documentation}
+%
+% \begin{implementation}
+%
+% \section{\pkg{antanilipsum} implementation}
+%
+%    \begin{macrocode}
+%<*package>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<@@=kgl>
+%    \end{macrocode}
+%
+%
+%    \begin{macrocode}
+\ProvidesExplPackage
+  {antanilipsum}
+  {2020-05-05}
+  {0.8}
+  {Generate text in Mascettian style}
+%    \end{macrocode}
+%
+% A check to make sure that \pkg{expl3} is not too old
+%    \begin{macrocode}
+\@ifpackagelater { expl3 } { 2019/07/01 }
+  { }
+  {
+    \PackageError { antanilipsum } { Support~package~expl3~too~old }
+      {
+        You~need~to~update~your~installation~of~the~bundles~
+        'l3kernel'~and~'l3packages'.\MessageBreak
+        Loading~antanilipsum~will~abort!
+      }
+    \tex_endinput:D
+  }
+%    \end{macrocode}
+%
+% \subsection{Package options and required packages}
+% We declare the allowed options and choose by default
+% \texttt{par}. We also need to declare a function |\@@_number:n|
+% that is set by the \texttt{numbers} option; its default action is to
+% gobble its argument.
+%    \begin{macrocode}
+\DeclareOption { par }
+  {
+   \cs_set_protected:Nn \@@_star: { \c_space_tl }
+   \cs_set_protected:Nn \@@_nostar: { \par }
+  }
+
+\DeclareOption{ nopar }
+  {
+   \cs_set_protected:Nn \@@_star: { \par }
+   \cs_set_protected:Nn \@@_nostar: { \c_space_tl }
+  }
+
+\DeclareOption{ numbers }
+  {
+   \cs_set_protected:Nn \@@_number:n
+    {
+     #1\nobreak\enspace\textbullet\nobreak\enspace
+    }
+  }
+
+\bool_new:N \g_@@_makeindex_bool
+\bool_gset_false:N \g_@@_makeindex_bool
+\DeclareOption{ index }
+  { \bool_gset_true:N \g_@@_makeindex_bool }
+
+\cs_new_eq:NN \@@_number:n \use_none:n
+\ExecuteOptions{par}
+\ProcessOptions \scan_stop:
+%    \end{macrocode}
+%
+% \subsection{Messages}
+% We define two messages.
+%    \begin{macrocode}
+\msg_new:nnn {antanilipsum}{how-many}
+  {The~package~provides~paragraphs~1~to~#1.~
+   Values~outside~this~range~will~be~ignored.}
+\msg_new:nnnn {antanilipsum}{already-defined}
+  {Control~sequence~#1~already~defined.}
+  {The~control~sequence~#1~is~already~defined,~
+   I'll~ignore~it}
+%    \end{macrocode}
+%
+% \subsection{Variables and constants}
+% The |\l_@@_start_int| variable will contain the starting number for
+% processing, while |\l_@@_end_int| the ending number. The
+% |\g_@@_pars_seq| sequence will contain the pseudomascettian sentences
+% and |\g_@@_words_seq| that contains the words to index.
+%    \begin{macrocode}
+\int_new:N \l_@@_start_int
+\int_new:N \l_@@_end_int
+\seq_new:N \g_@@_pars_seq
+\seq_new:N \g_@@_words_seq
+\seq_new:N \l_@@_sentences_seq
+%    \end{macrocode}
+%
+% \subsection{User level commands}
+% There are two user level commands, \cs{antani} (with a *-variant) and \cs{antanidef}.
+%
+% \begin{function}{\antani}
+% The (optional) argument is described as before. We use the
+% \cs{SplitArgument} feature provided by \pkg{xparse} to decide
+% whether the `range form' has been specified. In the \cs{antani*} form
+% we reverse the logic.
+%    \begin{macrocode}
+\NewDocumentCommand{\antani}
+  {
+   s
+   >{\SplitArgument{1}{-}}O{1-7}
+   >{\SplitArgument{1}{-}}o}
+  {
+   \group_begin:
+   \IfBooleanTF{#1}
+     { \cs_set_eq:NN \@@_par: \@@_star: }
+     { \cs_set_eq:NN \@@_par: \@@_nostar: }
+   \IfNoValueTF{#3}
+     { \@@_process:nn #2 \@@_print: }
+     { \@@_process:nnnn #2 #3 \tl_use:N \l_tmpa_tl \@@_par: }
+   \group_end:
+  }
+%    \end{macrocode}
+%\changes{v0.8a}{2019/07/24}{Added a missing \cs{@@par:}}
+% \end{function}
+%
+% \begin{function}{\antanidef}
+% Sometimes one needs just a piece of text without implicit \cs{par}
+% attached, so we provide \cs{antanidef}. In a group we neutralize the
+% meaning of |\@@_number:n| and |\@@_par:| and define the control
+% sequence given as first argument to the pseudomascettian sentence being
+% the $k$th element of the sequence containing them, where $k$ is the
+% number given as second argument. If the control sequence is already
+% defined we issue an error and don't perform the definition.
+%    \begin{macrocode}
+\NewDocumentCommand{\antanidef}
+  {
+   m
+   m
+   >{\SplitArgument{1}{-}}O{1-50}
+  }
+  {
+   \group_begin:
+   \@@_define:nnnn {#1} {#2} #3
+   \group_end:
+  }
+%    \end{macrocode}
+% \end{function}
+%
+% \subsection{Internal functions}
+% \begin{function}{\@@_process:nn}
+% The function |\@@_process:nn| sets the temporary variables
+% |\l_@@_start_int| and |\l_@@_end_int|. If the optional argument to
+% \cs{antani} is missing they are already set to 1 and 7 respectively;
+% otherwise the argument has been split into its components; if the
+% argument was |[|$m$|]| we set both variables to $m$, otherwise it
+% was in the form |[|$m$|-|$n$|]| and we do the obvious action.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_process:nn
+  {
+   \int_set:Nn \l_@@_start_int {#1}
+   \tl_if_novalue:nTF {#2}
+     { \int_set:Nn \l_@@_end_int {#1} }
+     { \int_set:Nn \l_@@_end_int {#2} }
+  }
+\cs_new_protected:Nn \@@_process:nnnn
+  {
+   \tl_set:Nx \l_tmpa_tl { \seq_item:Nn \g_@@_pars_seq {#1} }
+   \tl_if_novalue:nTF {#4}
+    { \@@_extract:nnV {#3} {#3} \l_tmpa_tl }
+    { \@@_extract:nnV {#3} {#4} \l_tmpa_tl }
+  }
+%    \end{macrocode}
+% \end{function}
+% \changes{v0.7}{2017/11/16}{Use \cs{tl_if_novalue:nTF} instead of \cs{IfNoValueTF}}
+%
+% \begin{function}{\@@_print:,\@@_use:n}
+% The printing routine is in the function |\@@_print:|; we start a
+% loop printing item number $x$ in the sequence |\g_@@_pars_seq| for
+% all numbers $x$ in the specified range. The function |\@@_use:n|
+% function is a wrapper to be used with |\int_step_function:nnnN|:
+% it's passed a number as argument, builds the constant name
+% corresponding to it and produces the text. If the index entry is to
+% be issued, the appropriate element from |\g_@@_words_seq| is used;
+% the page reference might not be correct, though.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_print:
+  {
+   \int_step_function:nnnN
+     {\l_@@_start_int} {1} {\l_@@_end_int} \@@_use:n
+  }
+\cs_new:Nn \@@_use:n
+ {
+  \int_compare:nNnF { #1 } > { \seq_count:N \g_@@_pars_seq }
+   { \@@_number:n {#1} }
+  \bool_if:NT \g_@@_makeindex_bool
+    {
+     \use:x { \exp_not:N \index{ \seq_item:Nn \g_@@_words_seq {#1} } }
+    }
+  \seq_item:Nn \g_@@_pars_seq {#1}
+ }
+%    \end{macrocode}
+% \end{function}
+%
+% \begin{function}{\@@_newpara:n}
+% The |\@@_newpara:n| appends a new item to the sequence |\g_@@_pars_seq|
+% consisting of, say, \meta{text of the 42nd sentence}|\@@_par:|
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_newpara:n
+  { \seq_gput_right:Nn \g_@@_pars_seq {#1\@@_par:} }
+%    \end{macrocode}
+% \end{function}
+%
+% \begin{function}{\@@_newword:n}
+% The |\@@_newword:n| function appends a new item to the sequence
+% |\g_@@_words_seq| consisting of one word from the corresponding
+% paragraph.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_newword:n
+  { \seq_gput_right:Nn \g_@@_words_seq {#1} }
+%    \end{macrocode}
+% \end{function}
+%
+% \begin{function}{\@@define:nnnn}
+% The function |\@@define:nnnn| chooses the paragraph, then extracts the
+% requested sentences.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_define:nnnn
+  {
+   \cs_set_eq:NN \@@_number:n \use_none:n
+   \cs_set_eq:NN \@@_par: \prg_do_nothing:
+   \cs_if_exist:NTF #1
+     {
+      \msg_error:nnn {antanilipsum} {already-defined} {#1}
+     }
+     {
+      \tl_set:Nx \l_tmpa_tl { \seq_item:Nn \g_@@_pars_seq {#2} }
+      \tl_if_novalue:nTF {#4}
+       { \@@_extract:nnV {#3} {#3} \l_tmpa_tl }
+       { \@@_extract:nnV {#3} {#4} \l_tmpa_tl }
+      \cs_new:Npx #1 { \l_tmpa_tl }
+     }
+  }
+%    \end{macrocode}
+% \end{function}
+% \begin{function}{\@@_extract:nnn}
+% This function does the extraction by splitting the input at periods
+% and then adding the requested sentences to another sequence that
+% later can be used.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_extract:nnn
+  {
+   \seq_set_split:Nnn \l_@@_sentences_seq { . } {#3}
+   \seq_clear:N \l_tmpa_seq
+   \seq_indexed_map_inline:Nn \l_@@_sentences_seq
+    {
+     \int_compare:nT { #1 <= ##1 <= #2 }
+      {\seq_put_right:Nn \l_tmpa_seq { ##2 } }
+    }
+   \tl_set:Nx \l_tmpa_tl { \seq_use:Nn \l_tmpa_seq { .~ }. }
+  }
+\cs_generate_variant:Nn \@@_extract:nnn { nnV }
+%    \end{macrocode}
+% \end{function}
+%
+% \subsection{Defining the sentences}
+% We start a group where we set the category
+% code of the space to 10 so as not to be forced to write |~| for
+% spaces.
+%    \begin{macrocode}
+\group_begin:
+\char_set_catcode_space:n {`\ }
+%    \end{macrocode}
+%
+% Then we provide all of the sentences with the pattern
+% |\@@_newpara:n {|\meta{text}|}|
+%    \begin{macrocode}
+\@@_newpara:n {Lei ha clacsonato. Tarapia tapioco, prematurata alla 
+supercazzola o scherziamo? No, mi permetta. No, io; eh scusi noi siamo in 
+quattro. Come se fosse antani anche per lei soltanto in due, oppure in quattro 
+anche scribai con cofandina; come antifurto, per esempio. Aspetti, mi porga 
+l'indice; ecco lo alzi così... guardi, guardi, guardi; lo vede il dito? Lo 
+vede che stuzzica, che prematura anche. Ma allora io le potrei dire anche per 
+il rispetto per l'autorità che anche soltanto le due cose come vicesindaco, 
+capisce? Pattene soppaltate secondo l'articolo 12 abbia pazienza, sennò, 
+posterdati, per due, anche un pochino antani in prefettura, senza contare che 
+la supercazzola prematurata, ha ha perso i contatti col tarapia tapioco.}
+
+\@@_newpara:n {Voglio il cappellano, il cappellano! Ho visto la Madonna! Mi 
+scusi; dica lei! Eh, antani, come se fosse antani, anche per il direttore, la 
+supercazzola con scappellamento. A destra, per due. Sbiriguda veniale, la 
+supercazzola prematurata, come fosse antani, con scappellamento a destra. 
+Ostantinato a malliti. Fifty fifty come fosse mea culpa, alla supercazzola. 
+Eeeh... non le dico, antani, come trazione per due anche se fosse supercazzola 
+bitumata, ha lo scappellamento a destra. Antani, come se fosse antani, anche 
+per il direttore, la supercazzola con scappellamento. A destra, per due. Dei 
+tre telefoni qual è come se fosse tarapia tapioco che avverto la supercazzola? 
+Dei tre...! Non m'ha capito bene, volevo dire dei tre telefoni qual è quello 
+col prefisso? Sorella, col tarapia tapioco come se fosse antani la barella 
+anche per due con lo scappellamento a sinistra!? No eh...? Pazienza.}
+
+\@@_newpara:n {Sbiliguda! Supercazzola prematurata? No, dico: prematurata la 
+supercazzola? Con scappellamento a destra! No, volevo dire: occhiello di 
+privilegio come se fosse Antani per lei; ispettore Tombale. Ispettore con 
+fuochi fatui... Restai per una quintana, o setta! Intanto, trinita 
+confraternita pulitina. Tarapio tapioco come se fosse Antani, la supercazzola 
+prematurata con dominus reveriscum blinda. Tarapio sulla supercazzola con 
+scappellamento destro o sinistra? Antipodi! Blinda la supercazzola con uno 
+scappellamento a sinistra o a destra come se fosse di pentolone... Ecco! È 
+l'informazione che volevo. Grazie. Antani come se fosse di scappellamento 
+tarapio tapioco scappellamento di forestieri? Carmensita, amore mio, sono un 
+uomo d'affari, blinda la supercazzola prematurata, una cosa d'assegni, tarapia 
+tapioca, tapioca, torapia, dollari, sterline, allaccia scarpa, scarpallaccia, 
+dico d'albergo, ma tu?}
+
+\@@_newpara:n {Sorella, ma la sbiriguda della sbrindolona come se fosse Antani 
+come facevo? Ho provato con la supercazzola con scappellamento paraplegico a 
+sinistra, ma non funzionava, faceva tu-tu, nel senso anafestico. Eh, sì; come 
+farà di capo d'altitudine, no? Segua col dito. Vede, se va giù non va su. Se 
+va su non va giù. Si faccia aiutare dalla suora, ma lei se la blinda la 
+supercazzola prematurata come se fosse anche un po' di Casentino che perdura 
+anche come cappotto; vede, m'importa sega.}
+
+\@@_newpara:n {Ah, pardon. Una mucca gioisce a la supercazzola, essendo nato 
+trinità che, in senso mimetico, antani aveva sbrodolato gia una cosa mucca e 
+tapioca, e mangiando infittisce il mistero: adesso la supercazzola prematurata 
+quintana, prematurata cristallizza dietro a supercazzola, in senso enfatico, 
+antani mangia e soffia spesso prematurata la supercazzola della mucca. Come 
+dire, tarapia infama dollari, pesetas con stranezza in mezzo a sbisiguli, in 
+senso denotativo, lei succhia con sbisigufi e disprezza antani tra 67 anni. 
+Sbiliguli blinda di tarataratata blinda, in senso enfatico, la supercazzola che 
+soffia e fanculizza sbifiguri con moderazione qualche volta, secondo la logica 
+scarpallaccia-allacciascarpa pecora. Bitumata con lo scappellamento a sinistra 
+carpiato in ratablinda. Ehhhh... Antani tira via gioisce spesso sull palle di 
+bradipo, avendo disquisito di cucina con antani sbirigudi che sterline, euri, 
+franchi francesi, moneta debole sbrodolava insieme a ratapioca, supercazzola 
+abbaia giustamente la supercazzola prematurata sbiligufi. Gioisce a fianco di 
+dollari, essendosi infervorato la supercazzola prematurata che antani 
+sbrodolava insieme ad antani e a una pecora che parla con disgusto frigge 
+giustamente prematurata prematurata la supercazzola, sbirigudi soffia racconta 
+storie qualche volta pecora ratatapioca, nel senso onomatopeico, prematurata 
+blatera con apprensione di alcool fotte ovviamente sbiliguri antani, in senso 
+allegorico, taratapioca si infervora insieme a quintana.}
+
+\@@_newpara:n {Bituma per caso una piccola prova? Lei ha clacsonato voglio il 
+dito, conte Mascetti, voglio antani, Necchi come fosse 2, voglio troppo, 
+Melandri, stuzzica il dito come fosse antani e brematura anche, se vicesindaco 
+maggiore di antani vicesindaco come se fosse antani con scappellamento a destra 
+per 2, che cos'è il genio? fantasia: vicesindaco come fosse vicesindaco per 
+antani, o magari intuizione: mi porga il cappellano, zingarata come fosse 
+cappellano più uno, zingarata a posterdati, o magari maggiore di mobiletto: 
+genio a posterdati, o tarapia tapioco: mi porga il cappello e velocità di 
+esecuzione, vicesindaco a posterdati, mi porga il vicesindaco, brematurata la 
+supercazzola tombale con alfio, serio o scherziamo? avvertite don ulrico, ho 
+visto la signora! vicesindaco come se fosse brematurata la supercazzola avanti 
+con il vicesindaco o scherziamo, vaffanzum 0! blinda la supercazzola Necchi 
+antanizzata con alfio Mascetti o scherziamo? vaffanzum alfio meno 2! bituma al 
+finale?}
+
+\@@_newpara:n {Lei ha clacsonato voglio una bucaiola, Necchi come se fosse 0 
+voglio prematurata, Mascetti come se fosse 72 prematurata a posterdati voglio 
+antifurto, Mascetti come se fosse 87. Voglio una cofandina, Mascetti come se 
+fosse prematurata con scappellamento a sinistra per 1 cofandina come fosse 
+cofandina meno 33 brematurata la supercazzola antanizzata con antifurto, 
+cofandina o scherziamo? vaffanzum! bituma scusi, noi siamo in quattro. Blinda 
+la supercazzola antanizzata con Alfio Mascetti, tarapia Mascetti o scherziamo? 
+voglio vicesindaco, Mascetti come se fosse 101 vicesindaco a posterdati voglio 
+pastene, Mascetti come se fosse vicesindaco più 7 pastene a posterdati bituma 
+in un certo senso. Pastene a posterdati tarapia a posterdati Alfio a posterdati 
+tarapia a posterdati voglio scappellamento, Mascetti come se fosse 114 
+scappellamento a posterdati pastene a posterdati voglio Antani, Mascetti come 
+se fosse pastene meno 8 Antani a posterdati.}
+
+\@@_newpara:n {Lei ha clacsonato voglio uno, Necchi come se fosse 1 voglio 
+antani, Necchi come se fosse uno, voglio il massimo, Necchi come se fosse 
+antani per 100 antani per 2 a posterdati stuzzica antani come se fosse antani 
+più uno, voglio l'amico, Necchi come se fosse 2 voglio un controllo, Melandri 
+come se fosse uno stuzzica voglio vicino, Necchi come se fosse antani diviso 
+l'amico per un amico, che cos'è antani? vicino: controllo come se fosse 0 e 
+velocità di esecuzione, amico come se fosse amico più uno e brematura anche, 
+se amico minore di antani, che cos'è il controllo? uno: antani a posterdati e 
+velocità di esecuzione e brematura anche, se antani minore del massimo.}
+
+\@@_newpara:n {Blinda la supercazzola densa con cofandina Sassaroli o 
+scherziamo? voglio una zingarata, Mascetti bitumando la confandina. Che cos'è 
+la cofandina? maggiore di 8: zingarata come fosse 32 o magari maggiore di 4: 
+zingarata come fosse 46 o magari maggiore di 2: zingarata come fosse 43 o 
+tarapia tapioco: zingarata come fosse 42 e velocità di esecuzione, zingarata a 
+posterdati blinda la supercazzola Sassaroli converge con vero Sassaroli, sogno 
+Sassaroli, passo Necchi, destinazione Sassaroli, finta Sassaroli o scherziamo? 
+voglio lo sci, Sassaroli come se fosse vero per vero più sogno per sogno che 
+cos'è il passo? maggiore di 255: vaffanzum un passo! o tarapia tapioco: che 
+cos'è lo sci? maggiore di 4: vaffanzum il passo! o tarapia tapioco: vaffanzum 
+prematurata la supercazzola converge con vero per vero meno un sogno per il 
+sogno più la destinazione, 2 per il vero per il sogno più la finta, il passo 
+più 1, destinazione, finta o scherziamo?! e velocità di esecuzione, e 
+velocità di esecuzione bitumata dico io! blinda la supercazzola Sassaroli 
+ancora con il vero Sassaroli, un sogno Sassaroli o scherziamo? vaffanzum 
+prematurata la supercazzola converge con vero, sogno, 0, vero, sogno o 
+scherziamo?! blinda la supercazzola antanizzata con mino Sassaroli, mano 
+Sassaroli, piede Sassaroli, fuochino Sassaroli, mono Sassaroli, pastene 
+Sassaroli o scherziamo? }
+
+\@@_newpara:n {Voglio ispettore, Mascetti come se fosse 10 voglio una pulitina, 
+Sassaroli come fosse mino stuzzica fuochino come se fosse fuochino più pastene 
+stuzzica mino come se fosse mino più piede prematurata la supercazzola densa 
+con bituma e prematurata la supercazzola bitumata come sempre e ancora con 
+mino, fuochino o scherziamo? o scherziamo? bituma no eh! Lo ripeto e brematura 
+anche, se mino minore di mano mino come se fosse la pulitina ispettore a 
+posterdati e brematura anche, se fuochino minore di mono blinda la supercazzola 
+cofandina con vero Sassaroli, l'immagine Sassaroli, la grandezza Sassaroli, il 
+finale Sassaroli o scherziamo? bituma come sempre prematurata la supercazzola 
+antanizzata con vero, vero più la grandezza per 78, grandezza, immagine, 
+immagine più il finale per 40, il finale o scherziamo? Lei ha clacsonato 
+prematurata la supercazzola cofandina con -2.3, -1.3, 0.05, 0.07 o scherziamo?}
+
+\@@_newpara:n {Lei ha clacsonato voglio una bucaiola, Necchi come se fosse 0 
+voglio prematurata, Mascetti come se fosse 72 prematurata a posterdati voglio 
+antifurto, Mascetti come se fosse 87. Voglio una cofandina, Mascetti come se 
+fosse prematurata con scappellamento a sinistra per 1 cofandina come fosse 
+cofandina meno 33 brematurata la supercazzola antanizzata con antifurto, 
+cofandina o scherziamo? vaffanzum! bituma scusi, noi siamo in quattro. Blinda 
+la supercazzola antanizzata con Alfio Mascetti, tarapia Mascetti o scherziamo? 
+voglio vicesindaco, Mascetti come se fosse 101 vicesindaco a posterdati voglio 
+pastene, Mascetti come se fosse vicesindaco più 7 pastene a posterdati bituma 
+in un certo senso. Pastene a posterdati tarapia a posterdati Alfio a posterdati 
+tarapia a posterdati voglio scappellamento, Mascetti come se fosse 114 
+scappellamento a posterdati pastene a posterdati voglio Antani, Mascetti come 
+se fosse pastene meno 8 Antani a posterdati.}
+
+\@@_newpara:n {Bituma un po' il calcolo del fattoriale come fosse un Sassaroli, 
+o no? blinda la supercazzola Sassaroli antanizzata con pazienza bitumata, 
+concorda Sassaroli o scherziamo? voglio il gruppo, Sassaroli il gruppo come 
+fosse 1 che cos'è la pazienza? 1: il gruppo come fosse 2 con scappellamento a 
+destra per 1 o tarapia tapioco: il gruppo come fosse prematurata la 
+supercazzola antanizzata con pazienza meno 1 o scherziamo? per la pazienza e 
+velocità di esecuzione bitumata! in fretta, e bitumando! se no il gruppo si 
+spacca, e insomma, vaffanzum il gruppo! Lei ha clacsonato voglio il 
+vicesindaco, Necchi voglio il numero, Necchi mi porga il numero bitumando il 
+vicesindaco, dico, bitumando il vicesindaco come fosse un numero prematurata la 
+supercazzola antanizzata con il vicesindaco o scherziamo? a posterdati 
+bitumati, pure, o in questura?}
+
+\@@_newpara:n {Voglio una tavola al papero per due per due, Necchi mi porga il 
+barilotto stuzzica bitumato il passaggio sullo sci nauticopastene a posterdati 
+voglio un passaggio, Necchi come fosse antani,antani come fosse pastene 
+bitumato e per finirepastene come fosse il pastene più il passaggiobarilotto 
+come fosse il barilotto bitumato di primameno 1 e brematura anche, se il 
+barilotto maggiore di Mascettivoglio una tavola al papero per due per due, 
+Perozzi, voglio lo sci, che cos'è il passo? maggiore di 255: vaffanzum un 
+passo!o tarapia tapioco: che cos'è lo sci? maggiore di 4: vaffanzum il passo! 
+o tarapia tapioco: vaffanzum prematurata la supercazzola converge convero per 
+vero meno un sogno per il sogno più la destinazione, 2 per il veroper il sogno 
+più la finta, il passo più 1, destinazione, finta o scherziamo?!e velocità 
+di esecuzione, e velocità di esecuzione bitumata dico io! Che cos'è il 
+controllo? uno: antani a posterdati e velocità di esecuzionee brematura anche, 
+se antani minore del massimo. Avvertite don ulrico.}
+
+\@@_newpara:n {Lei ha clacsonato antani con scappellamento a sinistra per 2 
+voglio antani, Necchi come se fosse 10 stuzzica antani come fosse antani meno 1 
+e brematura anche, se antani maggiore di 0 che cos'è il genio? intuizione: 
+genio come se fosse genio meno 1 o magari intuizione diviso 2: genio come se 
+fosse genio più 1 o magari maggiore di mobiletto per due: genio come se fosse 
+genio per 2 o tarapia tapioco: genio come se fosse 2 e velocità di esecuzione 
+che cos'è il genio? maggiore di mobiletto: genio come se fosse 2 o tarapia 
+tapioco: genio come se fosse 0 e velocità di esecuzione blinda la supercazzola 
+Necchi antanizzata con alfio Mascetti o scherziamo? vaffanzum alfio meno 2! 
+blinda la supercazzola Necchi antanizzata con alfio Mascetti, barilotto Necchi 
+o scherziamo? vaffanzum alfio meno 2! blinda la supercazzola antanizzata o 
+scherziamo? vaffanzum! antani come se fosse brematurata la supercazzola alfio 
+con barilotto diviso 3 o scherziamo? per 2 antani come se fosse 4 bituma, 
+scusi, noi siamo in quattro, ho visto la contessa, avvertite don ulrico scusi 
+noi siamo in 4, con rinforzino anche.}
+
+\@@_newpara:n {Ho capito. Tre applicazioni di afasol, di un’ora l’una. 
+Subito! Che c’è? Ehm... blinda la supercazzola con scappellamento a sinistra 
+e a destra come se fossero dei pentoloni. Ma allora io le potrei dire anche con 
+il rispetto per l’autorità, che anche soltanto le due cose come 
+vice-sindaco, capisce? Dimmi figliolo. Sbiliguda veniale con la supercazzola 
+prematurata. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Forse non ha capito. Io dicevo che se fosse il 
+coso di telefono, o il dito, come se fosse. Andando su o giù, giù o su. 
+Faceva tu-tu. In che senso? Nel senso anafestico. Eh, sì; come farà di capo 
+d’altitudine, no? Ah, vuol dire che il telefono è troppo alto? Ho capito. 
+Tre applicazioni di afasol, di un’ora l’una. Subito! Che c’è? Ehm... 
+blinda la supercazzola con scappellamento a sinistra e a destra come se fossero 
+dei pentoloni.}
+
+\@@_newpara:n {Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse per 
+andicappo di altitudine. No? Ah, vuol dire che il telefono è troppo alto? 
+Sorella? Eh!? Col tarapia tapioco come se fosse la supercazzola per lei. Voglio 
+il cappellano, il cappellano! Ho visto la Madonna!Segua col dito. Vede, se va 
+giù non va su. Se va su non va giù. Si faccia aiutare dalla suora. È quello 
+che stavo dicendo, no!? Ma che antifurto, mi faccia il piacere! Questi signori 
+qui stavano sonando loro. Segua col dito. Vede, se va giù non va su. Se va su 
+non va giù. Si faccia aiutare dalla suora. È quello che stavo dicendo, no!? E 
+lei... cosa si sente? Professore, non le dico. Antani come trazione per due 
+anche se fosse supercazzola bitumata, ha lo scappellamento a destra.}
+
+\@@_newpara:n {Guardi, le ho ritagliato quell'articolo sul Casentino. Ma lei se 
+la blinda la supercazzola prematurata come se fosse anche un po' di Casentino 
+che perdura anche come cappotto; vede, m'importa. Che non si ripeta più, vada 
+pure! Senz'altro!!! Tarapia tapioco! Brematurata la supercazzola o scherziamo? 
+Prego? No, mi permetta. No, io, scusi noi siamo in quattro. Non si 
+intrometta!No, aspetti, mi porga l'indice; ecco lo alzi così... guardi, 
+guardi, guardi; lo vede il dito? Lo vede che stuzzica, che prematura anche. 
+Vicesindaco? Basta così, mi seguano al commissariato! No, no, no, attenzione, 
+noo!Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse per andicappo 
+di altitudine. No? Ah, vuol dire che il telefono è troppo alto? Carmensita, 
+amore mio, sono un uomo d'affari, blinda la supercazzola prematurata, una cosa 
+d'assegni, tarapia tapioca, tapioca torapia, dollari, sterline, allaccia 
+scarpa, scarpallaccia, dico d'albergo.}
+
+\@@_newpara:n {Segua col dito. Vede, se va giù non va su. Se va su non va 
+giù. Si faccia aiutare dalla suora. È quello che stavo dicendo, no!? Non si 
+intrometta!No, aspetti, mi porga l'indice; ecco lo alzi così... guardi, 
+guardi, guardi; lo vede il dito? Lo vede che stuzzica, che prematura anche. 
+Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse per andicappo di 
+altitudine. No? Ah, vuol dire che il telefono è troppo alto? Ah, pardon. 
+Tarapio tapioco come se fosse Antani, la supercazzola prematurata con dominus 
+reveriscum blinda. Come, prego? Tarapio sulla supercazzola con scappellamento 
+destro o sinistra? Carmensita, amore mio, sono un uomo d'affari, blinda la 
+supercazzola prematurata, una cosa d'assegni, tarapia tapioca, tapioca torapia, 
+dollari, sterline, allaccia scarpa, scarpallaccia, dico d'albergo, ma tu? Segua 
+col dito. Vede, se va giù non va su. Se va su non va giù. Si faccia aiutare 
+dalla suora. È quello che stavo dicendo, no!? tarapia.}
+
+\@@_newpara:n {Vicesindaco? Basta 'osì, mi seguano al commissariato! No, no, 
+no, attenzione, noo!Ho capito. Tre applicazioni di afasol, di un’ora l’una. 
+Subito! Che c’è? Ehm... blinda la supercazzola con scappellamento a sinistra 
+e a destra come se fossero dei pentoloni. Si, ma la sbiriguda della 
+sbrindellona come se fosse antani come faceva? Prego? Ho provato con la 
+supercazzola con scappelamento paraplegico a sinistra, ma non funzionava. 
+Pattene soppaltate secondo l'articolo 12 abbia pazienza, sennò, posterdati, 
+per due, anche un pochino antani in prefettura... senza contare che la 
+supercazzola prematurata ha perso i contatti col tarapio tapioco. Ho provato 
+con la supercazzola con scappellamento paraplegico a sinistra, ma non 
+funzionava, faceva tu-tu. In che senso? Nel senso anafestico. Eh, sì; come 
+farà di capo d'altitudine, no? Ho provato con la supercazzola con 
+scappellamento paraplegico a sinistra, ma non funzionava, faceva tu-tu. In che 
+senso? Nel senso anafestico. Eh, sì; come farà di capo d'altitudine, no? 
+Forse.}
+
+\@@_newpara:n {Che non si ripeta più, vada pure! Senz'altro!!! Tarapia 
+tapioco! Brematurata la supercazzola o scherziamo? Prego? No, mi permetta. No, 
+io, scusi noi siamo in quattro. Come se fosse antani anche per lei soltanto in 
+due, oppure in quattro anche scribai con cofandina; come antifurto, per 
+esempio. Mi scusi, Antani come se fosse di scappellamento tarapio tapioco 
+scappellamento di forestieri? Va be', siete forestieri, ma i cartelli sono 
+internazionali. Mi può mostrare la sua patente, per favore? Mi faccia il 
+piacere! Questi signori qui stavano sonando loro. Faceva Du-Du! In che senso? 
+Nel senso anafestico! Si, forse per andicappo di altitudine. No? Ah, vuol dire 
+che il telefono è troppo alto? Vicesindaco? Basta 'osì, mi seguano al 
+commissariato! No, no, no, attenzione, noo.}
+
+\@@_newpara:n {Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Quante volte figliolo? Fifty fifty, prematinea 
+come fosse mea culpa. Alla supercazzola.Guardi, le ho ritagliato quell'articolo 
+sul Casentino. Ma lei se la blinda la supercazzola prematurata come se fosse 
+anche un po' di Casentino che perdura anche come cappotto; vede, m'importa.Come 
+se fosse antani anche per lei soltanto in due, oppure in quattro anche scribai 
+con cofandina; come antifurto, per esempio. E lei... cosa si sente? Professore, 
+non le dico. Antani come trazione per due anche se fosse supercazzola bitumata, 
+ha lo scappellamento a destra.Faceva Du-Du! In che senso? Nel senso anafestico! 
+Si, forse per andicappo di altitudine. No? Ah, vuol dire che il telefono è 
+troppo alto? Non si intrometta!No, aspetti, mi porga l'indice; ecco lo alzi 
+così... guardi, guardi, guardi; lo vede il dito? Lo vede che stuzzica, che 
+prematura anche.}
+
+\@@_newpara:n {No, no... non era troppo alto. Forse non ha capito. Io dicevo 
+che se fosse il coso di telefono, o il dito, come se fosse. Andando su o giù, 
+giù o su. Si, ma la sbiriguda della sbrindellona come se fosse antani come 
+faceva? Prego? Ho provato con la supercazzola con scappelamento paraplegico a 
+sinistra, ma non funzionava. Pattene soppaltate secondo l'articolo 12 abbia 
+pazienza, sennò, posterdati, per due, anche un pochino antani in prefettura... 
+senza contare che la supercazzola prematurata ha perso i contatti col tarapio 
+tapioco. Mi scusi, Antani come se fosse di scappellamento tarapio tapioco 
+scappellamento di forestieri? Va be', siete forestieri, ma i cartelli sono 
+internazionali. Mi può mostrare la sua patente, per favore? Ah, pardon. 
+Tarapio tapioco come se fosse Antani, la supercazzola prematurata con dominus 
+reveriscum blinda. Come, prego? Tarapio sulla supercazzola con scappellamento 
+destro o sinistra? Dimmi figliolo. Sbiliguda veniale con la supercazzola 
+prematurata. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti.}
+
+\@@_newpara:n {Guardi, le ho ritagliato quell'articolo sul Casentino. Ma lei se 
+la blinda la supercazzola prematurata come se fosse anche un po' di Casentino 
+che perdura anche come cappotto; vede, m'importa. Sorella? Eh!? Col tarapia 
+tapioco come se fosse la supercazzola per lei. Voglio il cappellano, il 
+cappellano! Ho visto la Madonna! Pattene soppaltate secondo l'articolo 12 abbia 
+pazienza, sennò, posterdati, per due, anche un pochino antani in prefettura... 
+senza contare che la supercazzola prematurata ha perso i contatti col tarapio 
+tapioco. Si, ma la sbiriguda della sbrindellona come se fosse antani come 
+faceva? Prego? Ho provato con la supercazzola con scappelamento paraplegico a 
+sinistra, ma non funzionava.}
+
+\@@_newpara:n {No, no... non era troppo alto. Forse non ha capito. Io dicevo 
+che se fosse il coso di telefono, o il dito, come se fosse. Andando su o giù, 
+giù o su. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Quante volte figliolo? Fifty fifty, prematinea 
+come fosse mea culpa. Alla supercazzola. Vicesindaco? Basta 'osì, mi seguano 
+al commissariato! No, no, no, attenzione, noo! Come se fosse antani anche per 
+lei soltanto in due, oppure in quattro anche scribai con cofandina; come 
+antifurto, per esempio.}
+
+\@@_newpara:n {Dimmi figliolo. Sbiliguda veniale con la supercazzola 
+prematurata. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. No, no... non era troppo alto. Forse non ha 
+capito. Io dicevo che se fosse il coso di telefono, o il dito, come se fosse. 
+Andando su o giù, giù o su. Ah, pardon. Tarapio tapioco come se fosse Antani, 
+la supercazzola prematurata con dominus reveriscum blinda. Come, prego? Tarapio 
+sulla supercazzola con scappellamento destro o sinistra? Segua col dito. Vede, 
+se va giù non va su. Se va su non va giù. Si faccia aiutare dalla suora. È 
+quello che stavo dicendo, no!?}
+
+\@@_newpara:n {Non si intrometta! No, aspetti, mi porga l'indice; ecco lo alzi 
+così... guardi, guardi, guardi; lo vede il dito? Lo vede che stuzzica, che 
+prematura anche. Pattene soppaltate secondo l'articolo 12 abbia pazienza, 
+sennò, posterdati, per due, anche un pochino antani in prefettura... senza 
+contare che la supercazzola prematurata ha perso i contatti col tarapio 
+tapioco. Come se fosse antani anche per lei soltanto in due, oppure in quattro 
+anche scribai con cofandina; come antifurto, per esempio. Segua col dito. Vede, 
+se va giù non va su. Se va su non va giù. Si faccia aiutare dalla suora. È 
+quello che stavo dicendo, no!?}
+
+\@@_newpara:n {Ma che antifurto, mi faccia il piacere! Questi signori qui 
+stavano sonando loro. No, no... non era troppo alto. Forse non ha capito. Io 
+dicevo che se fosse il coso di telefono, o il dito, come se fosse. Andando su o 
+giù, giù o su. Ah, pardon. Tarapio tapioco come se fosse Antani, la 
+supercazzola prematurata con dominus reveriscum blinda. Come, prego? Tarapio 
+sulla supercazzola con scappellamento destro o sinistra? Come figliolo? 
+Confesso come fosse antani con scappellamento a destra costantinato ammaliti. 
+Quante volte figliolo? Fifty fifty, prematinea come fosse mea culpa. Alla 
+supercazzola.}
+
+\@@_newpara:n {Si, ma la sbiriguda della sbrindellona come se fosse antani come 
+faceva? Prego? Ho provato con la supercazzola con scappelamento paraplegico a 
+sinistra, ma non funzionava. Faceva Du-Du! In che senso? Nel senso anafestico! 
+Si, forse per andicappo di altitudine. No? Ah, vuol dire che il telefono è 
+troppo alto? Guardi, le ho ritagliato quell'articolo sul Casentino. Ma lei se 
+la blinda la supercazzola prematurata come se fosse anche un po' di Casentino 
+che perdura anche come cappotto; vede, m'importa. Sorella? Eh!? Col tarapia 
+tapioco come se fosse la supercazzola per lei. Voglio il cappellano, il 
+cappellano! Ho visto la Madonna!}
+
+\@@_newpara:n {Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse per 
+andicappo di altitudine. No? Ah, vuol dire che il telefono è troppo alto? Come 
+figliolo? Confesso come fosse antani con scappellamento a destra costantinato 
+ammaliti. Quante volte figliolo? Fifty fifty, prematinea come fosse mea culpa. 
+Alla supercazzola. Dimmi figliolo. Sbiliguda veniale con la supercazzola 
+prematurata. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Che non si ripeta più, vada pure! Senz'altro!!! 
+Tarapia tapioco! Brematurata la supercazzola o scherziamo? Prego? No, mi 
+permetta. No, io, scusi noi siamo in quattro.}
+
+\@@_newpara:n {Ho capito. Tre applicazioni di afasol, di un’ora l’una. 
+Subito! Che c’è? Ehm... blinda la supercazzola con scappellamento a sinistra 
+e a destra come se fossero dei pentoloni. Vicesindaco? Basta 'osì, mi seguano 
+al commissariato! No, no, no, attenzione, noo! Dimmi figliolo. Sbiliguda 
+veniale con la supercazzola prematurata. Come figliolo? Confesso come fosse 
+antani con scappellamento a destra costantinato ammaliti. Che non si ripeta 
+più, vada pure! Senz'altro!!! Tarapia tapioco! Brematurata la supercazzola o 
+scherziamo? Prego? No, mi permetta. No, io, scusi noi siamo in quattro.}
+
+\@@_newpara:n {Ah, pardon. Tarapio tapioco come se fosse Antani, la 
+supercazzola prematurata con dominus reveriscum blinda. Come, prego? Tarapio 
+sulla supercazzola con scappellamento destro o sinistra? No, no... non era 
+troppo alto. Forse non ha capito. Io dicevo che se fosse il coso di telefono, o 
+il dito, come se fosse. Andando su o giù, giù o su. Vicesindaco? Basta 'osì, 
+mi seguano al commissariato! No, no, no, attenzione, noo! Dimmi figliolo. 
+Sbiliguda veniale con la supercazzola prematurata. Come figliolo? Confesso come 
+fosse antani con scappellamento a destra costantinato ammaliti.}
+
+\@@_newpara:n {E lei... cosa si sente? Professore, non le dico. Antani come 
+trazione per due anche se fosse supercazzola bitumata, ha lo scappellamento a 
+destra. Dimmi figliolo. Sbiliguda veniale con la supercazzola prematurata. Come 
+figliolo? Confesso come fosse antani con scappellamento a destra costantinato 
+ammaliti. Pattene soppaltate secondo l'articolo 12 abbia pazienza, sennò, 
+posterdati, per due, anche un pochino antani in prefettura... senza contare che 
+la supercazzola prematurata ha perso i contatti col tarapio tapioco. Come se 
+fosse antani anche per lei soltanto in due, oppure in quattro anche scribai con 
+cofandina; come antifurto, per esempio.}
+
+\@@_newpara:n {Carmensita, amore mio, sono un uomo d'affari, blinda la 
+supercazzola prematurata, una cosa d'assegni, tarapia tapioca, tapioca torapia, 
+dollari, sterline, allaccia scarpa, scarpallaccia, dico d'albergo, ma tu? E 
+lei... cosa si sente? Professore, non le dico. Antani come trazione per due 
+anche se fosse supercazzola bitumata, ha lo scappellamento a destra. Ma allora 
+io le potrei dire anche con il rispetto per l'autorità, che anche soltanto le 
+due cose come vice-sindaco, capisce? Vicesindaco? Basta 'osì, mi seguano al 
+commissariato! No, no, no, attenzione, noo!}
+
+\@@_newpara:n {E lei... cosa si sente? Professore, non le dico. Antani come 
+trazione per due anche se fosse supercazzola bitumata, ha lo scappellamento a 
+destra. Come figliolo? Confesso come fosse antani con scappellamento a destra 
+costantinato ammaliti. Quante volte figliolo? Fifty fifty, prematinea come 
+fosse mea culpa. Alla supercazzola. Come figliolo? Confesso come fosse antani 
+con scappellamento a destra costantinato ammaliti. Quante volte figliolo? Fifty 
+fifty, prematinea come fosse mea culpa. Alla supercazzola. Vicesindaco? Basta 
+'osì, mi seguano al commissariato! No, no, no, attenzione, noo!}
+
+\@@_newpara:n {Dimmi figliolo. Sbiliguda veniale con la supercazzola 
+prematurata. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Ho provato con la supercazzola con scappellamento 
+paraplegico a sinistra, ma non funzionava, faceva tu-tu. In che senso? Nel 
+senso anafestico. Eh, sì; come farà di capo d'altitudine, no? Ma che 
+antifurto, mi faccia il piacere! Questi signori qui stavano sonando loro. Non 
+si intrometta! No, aspetti, mi porga l'indice; ecco lo alzi così... guardi, 
+guardi, guardi; lo vede il dito? Lo vede che stuzzica, che prematura anche.}
+
+\@@_newpara:n {Guardi, le ho ritagliato quell'articolo sul Casentino. Ma lei se 
+la blinda la supercazzola prematurata come se fosse anche un po' di Casentino 
+che perdura anche come cappotto; vede, m'importa. No, no... non era troppo 
+alto. Forse non ha capito. Io dicevo che se fosse il coso di telefono, o il 
+dito, come se fosse. Andando su o giù, giù o su. Non si intrometta! No, 
+aspetti, mi porga l'indice; ecco lo alzi così... guardi, guardi, guardi; lo 
+vede il dito? Lo vede che stuzzica, che prematura anche. Mi scusi, Antani come 
+se fosse di scappellamento tarapio tapioco scappellamento di forestieri? Va 
+be', siete forestieri, ma i cartelli sono internazionali. Mi può mostrare la 
+sua patente, per favore?}
+
+\@@_newpara:n {Si, ma la sbiriguda della sbrindellona come se fosse antani come 
+faceva? Prego? Ho provato con la supercazzola con scappelamento paraplegico a 
+sinistra, ma non funzionava. Mo basta insomma! Qui c’è gente che soffre per 
+davvero, lo capite? Chiamo il medico di turno e domani ve la vedrete con il 
+professore! Ho capito. Tre applicazioni di afasol, di un’ora l’una. Subito! 
+Che c’è? Ehm... blinda la supercazzola con scappellamento a sinistra e a 
+destra come se fossero dei pentoloni. Si, ma la sbiriguda della sbrindellona 
+come se fosse antani come faceva? Prego? Ho provato con la supercazzola con 
+scappelamento paraplegico a sinistra, ma non funzionava.}
+
+\@@_newpara:n {Segua col dito. Vede, se va giù non va su. Se va su non va 
+giù. Si faccia aiutare dalla suora. È quello che stavo dicendo, no!? Ma 
+allora io le potrei dire anche con il rispetto per l'autorità, che anche 
+soltanto le due cose come vice-sindaco, capisce? Ma allora io le potrei dire 
+anche con il rispetto per l'autorità, che anche soltanto le due cose come 
+vice-sindaco, capisce? Dimmi figliolo. Sbiliguda veniale con la supercazzola 
+prematurata. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti.}
+
+\@@_newpara:n {Dimmi figliolo. Sbiliguda veniale con la supercazzola 
+prematurata. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Faceva Du-Du! In che senso? Nel senso anafestico! 
+Si, forse per andicappo di altitudine. No? Ah, vuol dire che il telefono è 
+troppo alto? Dimmi figliolo. Sbiliguda veniale con la supercazzola prematurata. 
+Come figliolo? Confesso come fosse antani con scappellamento a destra 
+costantinato ammaliti. Come figliolo? Confesso come fosse antani con 
+scappellamento a destra costantinato ammaliti. Quante volte figliolo? Fifty 
+fifty, prematinea come fosse mea culpa. Alla supercazzola.}
+
+\@@_newpara:n {Che non si ripeta più, vada pure! Senz'altro!!! Tarapia 
+tapioco! Brematurata la supercazzola o scherziamo? Prego? No, mi permetta. No, 
+io, scusi noi siamo in quattro. Faceva Du-Du! In che senso? Nel senso 
+anafestico! Si, forse per andicappo di altitudine. No? Ah, vuol dire che il 
+telefono è troppo alto? Carmensita, amore mio, sono un uomo d'affari, blinda 
+la supercazzola prematurata, una cosa d'assegni, tarapia tapioca, tapioca 
+torapia, dollari, sterline, allaccia scarpa, scarpallaccia, dico d'albergo, ma 
+tu? Guardi, le ho ritagliato quell'articolo sul Casentino. Ma lei se la blinda 
+la supercazzola prematurata come se fosse anche un po' di Casentino che perdura 
+anche come cappotto; vede, m'importa.}
+
+\@@_newpara:n {Ma allora io le potrei dire anche con il rispetto per 
+l'autorità, che anche soltanto le due cose come vice-sindaco, capisce? Mi 
+scusi, Antani come se fosse di scappellamento tarapio tapioco scappellamento di 
+forestieri? Va be', siete forestieri, ma i cartelli sono internazionali. Mi 
+può mostrare la sua patente, per favore? Non si intrometta! No, aspetti, mi 
+porga l'indice; ecco lo alzi così... guardi, guardi, guardi; lo vede il dito? 
+Lo vede che stuzzica, che prematura anche. Ah, pardon. Tarapio tapioco come se 
+fosse Antani, la supercazzola prematurata con dominus reveriscum blinda. Come, 
+prego? Tarapio sulla supercazzola con scappellamento destro o sinistra?}
+
+\@@_newpara:n {Si, ma la sbiriguda della sbrindellona come se fosse antani come 
+faceva? Prego? Ho provato con la supercazzola con scappelamento paraplegico a 
+sinistra, ma non funzionava. Pattene soppaltate secondo l'articolo 12 abbia 
+pazienza, sennò, posterdati, per due, anche un pochino antani in prefettura... 
+senza contare che la supercazzola prematurata ha perso i contatti col tarapio 
+tapioco. Ho provato con la supercazzola con scappellamento paraplegico a 
+sinistra, ma non funzionava, faceva tu-tu. In che senso? Nel senso anafestico. 
+Eh, sì; come farà di capo d'altitudine, no? Come figliolo? Confesso come 
+fosse antani con scappellamento a destra costantinato ammaliti. Quante volte 
+figliolo? Fifty fifty, prematinea come fosse mea culpa. Alla supercazzola.}
+
+\@@_newpara:n {Segua col dito. Vede, se va giù non va su. Se va su non va 
+giù. Si faccia aiutare dalla suora. È quello che stavo dicendo, no!? Si, ma 
+la sbiriguda della sbrindellona come se fosse antani come faceva? Prego? Ho 
+provato con la supercazzola con scappelamento paraplegico a sinistra, ma non 
+funzionava. Ah, pardon. Tarapio tapioco come se fosse Antani, la supercazzola 
+prematurata con dominus reveriscum blinda. Come, prego? Tarapio sulla 
+supercazzola con scappellamento destro o sinistra? Ma che antifurto, mi faccia 
+il piacere! Questi signori qui stavano sonando loro.}
+
+\@@_newpara:n {Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse per 
+andicappo di altitudine. No? Ah, vuol dire che il telefono è troppo alto? Ah, 
+pardon. Tarapio tapioco come se fosse Antani, la supercazzola prematurata con 
+dominus reveriscum blinda. Come, prego? Tarapio sulla supercazzola con 
+scappellamento destro o sinistra? Come se fosse antani anche per lei soltanto 
+in due, oppure in quattro anche scribai con cofandina; come antifurto, per 
+esempio. Pattene soppaltate secondo l'articolo 12 abbia pazienza, sennò, 
+posterdati, per due, anche un pochino antani in prefettura... senza contare che 
+la supercazzola prematurata ha perso i contatti col tarapio tapioco.}
+
+\@@_newpara:n {Ho provato con la supercazzola con scappellamento paraplegico a 
+sinistra, ma non funzionava, faceva tu-tu. In che senso? Nel senso anafestico. 
+Eh, sì; come farà di capo d'altitudine, no? Ah, pardon. Tarapio tapioco come 
+se fosse Antani, la supercazzola prematurata con dominus reveriscum blinda. 
+Come, prego? Tarapio sulla supercazzola con scappellamento destro o sinistra? 
+Vicesindaco? Basta 'osì, mi seguano al commissariato! No, no, no, attenzione, 
+noo! Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse per andicappo 
+di altitudine. No? Ah, vuol dire che il telefono è troppo alto?}
+
+\@@_newpara:n {Segua col dito. Vede, se va giù non va su. Se va su non va 
+giù. Si faccia aiutare dalla suora. È quello che stavo dicendo, no!? Come se 
+fosse antani anche per lei soltanto in due, oppure in quattro anche scribai con 
+cofandina; come antifurto, per esempio. Carmensita, amore mio, sono un uomo 
+d'affari, blinda la supercazzola prematurata, una cosa d'assegni, tarapia 
+tapioca, tapioca torapia, dollari, sterline, allaccia scarpa, scarpallaccia, 
+dico d'albergo, ma tu? Ho capito. Tre applicazioni di afasol, di un’ora 
+l’una. Subito! Che c’è? Ehm... blinda la supercazzola con scappellamento a 
+sinistra e a destra come se fossero dei pentoloni.}
+
+\@@_newpara:n {Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Quante volte figliolo? Fifty fifty, prematinea 
+come fosse mea culpa. Alla supercazzola. Come figliolo? Confesso come fosse 
+antani con scappellamento a destra costantinato ammaliti. Quante volte 
+figliolo? Fifty fifty, prematinea come fosse mea culpa. Alla supercazzola. E 
+lei... cosa si sente? Professore, non le dico. Antani come trazione per due 
+anche se fosse supercazzola bitumata, ha lo scappellamento a destra. Si, ma la 
+sbiriguda della sbrindellona come se fosse antani come faceva? Prego? Ho 
+provato con la supercazzola con scappelamento paraplegico a sinistra, ma non 
+funzionava.}
+
+\@@_newpara:n {Come se fosse antani anche per lei soltanto in due, oppure in 
+quattro anche scribai con cofandina; come antifurto, per esempio. Si, ma la 
+sbiriguda della sbrindellona come se fosse antani come faceva? Prego? Ho 
+provato con la supercazzola con scappelamento paraplegico a sinistra, ma non 
+funzionava. Sorella? Eh!? Col tarapia tapioco come se fosse la supercazzola per 
+lei. Voglio il cappellano, il cappellano! Ho visto la Madonna! Ma che 
+antifurto, mi faccia il piacere! Questi signori qui stavano sonando loro.}
+
+\@@_newpara:n {Ho provato con la supercazzola con scappellamento paraplegico a 
+sinistra, ma non funzionava, faceva tu-tu. In che senso? Nel senso anafestico. 
+Eh, sì; come farà di capo d'altitudine, no? Come figliolo? Confesso come 
+fosse antani con scappellamento a destra costantinato ammaliti. Quante volte 
+figliolo? Fifty fifty, prematinea come fosse mea culpa. Alla supercazzola. Come 
+se fosse antani anche per lei soltanto in due, oppure in quattro anche scribai 
+con cofandina; come antifurto, per esempio. Ho capito. Tre applicazioni di 
+afasol, di un’ora l’una. Subito! Che c’è? Ehm... blinda la supercazzola 
+con scappellamento a sinistra e a destra come se fossero dei pentoloni.}
+
+\@@_newpara:n {Non si intrometta! No, aspetti, mi porga l'indice; ecco lo alzi 
+così... guardi, guardi, guardi; lo vede il dito? Lo vede che stuzzica, che 
+prematura anche. E lei... cosa si sente? Professore, non le dico. Antani come 
+trazione per due anche se fosse supercazzola bitumata, ha lo scappellamento a 
+destra. Ho capito. Tre applicazioni di afasol, di un’ora l’una. Subito! Che 
+c’è? Ehm... blinda la supercazzola con scappellamento a sinistra e a destra 
+come se fossero dei pentoloni. Faceva Du-Du! In che senso? Nel senso 
+anafestico! Si, forse per andicappo di altitudine. No? Ah, vuol dire che il 
+telefono è troppo alto?}
+
+\@@_newpara:n {Ho provato con la supercazzola con scappellamento paraplegico a 
+sinistra, ma non funzionava, faceva tu-tu. In che senso? Nel senso anafestico. 
+Eh, sì; come farà di capo d'altitudine, no? Carmensita, amore mio, sono un 
+uomo d'affari, blinda la supercazzola prematurata, una cosa d'assegni, tarapia 
+tapioca, tapioca torapia, dollari, sterline, allaccia scarpa, scarpallaccia, 
+dico d'albergo, ma tu? Ma che antifurto, mi faccia il piacere! Questi signori 
+qui stavano sonando loro. Come se fosse antani anche per lei soltanto in due, 
+oppure in quattro anche scribai con cofandina; come antifurto, per esempio.}
+
+\@@_newpara:n {Mo basta insomma! Qui c’è gente che soffre per davvero, lo 
+capite? Chiamo il medico di turno e domani ve la vedrete con il professore! No, 
+no... non era troppo alto. Forse non ha capito. Io dicevo che se fosse il coso 
+di telefono, o il dito, come se fosse. Andando su o giù, giù o su. Segua col 
+dito. Vede, se va giù non va su. Se va su non va giù. Si faccia aiutare dalla 
+suora. È quello che stavo dicendo, no!? Ma allora io le potrei dire anche con 
+il rispetto per l'autorità, che anche soltanto le due cose come vice-sindaco, 
+capisce?}
+
+\@@_newpara:n {Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse per 
+andicappo di altitudine. No? Ah, vuol dire che il telefono è troppo alto? 
+Carmensita, amore mio, sono un uomo d'affari, blinda la supercazzola 
+prematurata, una cosa d'assegni, tarapia tapioca, tapioca torapia, dollari, 
+sterline, allaccia scarpa, scarpallaccia, dico d'albergo, ma tu? Faceva Du-Du! 
+In che senso? Nel senso anafestico! Si, forse per andicappo di altitudine. No? 
+Ah, vuol dire che il telefono è troppo alto? Guardi, le ho ritagliato 
+quell'articolo sul Casentino. Ma lei se la blinda la supercazzola prematurata 
+come se fosse anche un po' di Casentino che perdura anche come cappotto; vede, 
+m'importa.}
+
+\@@_newpara:n {Come se fosse antani anche per lei soltanto in due, oppure in 
+quattro anche scribai con cofandina; come antifurto, per esempio. Dimmi 
+figliolo. Sbiliguda veniale con la supercazzola prematurata. Come figliolo? 
+Confesso come fosse antani con scappellamento a destra costantinato ammaliti. E 
+lei... cosa si sente? Professore, non le dico. Antani come trazione per due 
+anche se fosse supercazzola bitumata, ha lo scappellamento a destra. Ho capito. 
+Tre applicazioni di afasol, di un’ora l’una. Subito! Che c’è? Ehm... 
+blinda la supercazzola con scappellamento a sinistra e a destra come se fossero 
+dei pentoloni.}
+
+\@@_newpara:n {Mo basta insomma! Qui c’è gente che soffre per davvero, lo 
+capite? Chiamo il medico di turno e domani ve la vedrete con il professore! Non 
+si intrometta! No, aspetti, mi porga l'indice; ecco lo alzi così... guardi, 
+guardi, guardi; lo vede il dito? Lo vede che stuzzica, che prematura anche. Ma 
+allora io le potrei dire anche con il rispetto per l'autorità, che anche 
+soltanto le due cose come vice-sindaco, capisce? Sorella? Eh!? Col tarapia 
+tapioco come se fosse la supercazzola per lei. Voglio il cappellano, il 
+cappellano! Ho visto la Madonna!}
+
+\@@_newpara:n {Guardi, le ho ritagliato quell'articolo sul Casentino. Ma lei se 
+la blinda la supercazzola prematurata come se fosse anche un po' di Casentino 
+che perdura anche come cappotto; vede, m'importa. Come se fosse antani anche 
+per lei soltanto in due, oppure in quattro anche scribai con cofandina; come 
+antifurto, per esempio. Dimmi figliolo. Sbiliguda veniale con la supercazzola 
+prematurata. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Carmensita, amore mio, sono un uomo d'affari, 
+blinda la supercazzola prematurata, una cosa d'assegni, tarapia tapioca, 
+tapioca torapia, dollari, sterline, allaccia scarpa, scarpallaccia, dico 
+d'albergo, ma tu?}
+
+\@@_newpara:n {Ho capito. Tre applicazioni di afasol, di un’ora l’una. 
+Subito! Che c’è? Ehm... blinda la supercazzola con scappellamento a sinistra 
+e a destra come se fossero dei pentoloni. Ma che antifurto, mi faccia il 
+piacere! Questi signori qui stavano sonando loro. Ah, pardon. Tarapio tapioco 
+come se fosse Antani, la supercazzola prematurata con dominus reveriscum 
+blinda. Come, prego? Tarapio sulla supercazzola con scappellamento destro o 
+sinistra? Sorella? Eh!? Col tarapia tapioco come se fosse la supercazzola per 
+lei. Voglio il cappellano, il cappellano! Ho visto la Madonna!}
+
+\@@_newpara:n {Mi scusi, Antani come se fosse di scappellamento tarapio tapioco 
+scappellamento di forestieri? Va be', siete forestieri, ma i cartelli sono 
+internazionali. Mi può mostrare la sua patente, per favore? Ma allora io le 
+potrei dire anche con il rispetto per l'autorità, che anche soltanto le due 
+cose come vice-sindaco, capisce? Come se fosse antani anche per lei soltanto in 
+due, oppure in quattro anche scribai con cofandina; come antifurto, per 
+esempio. Come se fosse antani anche per lei soltanto in due, oppure in quattro 
+anche scribai con cofandina; come antifurto, per esempio.}
+
+\@@_newpara:n {Carmensita, amore mio, sono un uomo d'affari, blinda la 
+supercazzola prematurata, una cosa d'assegni, tarapia tapioca, tapioca torapia, 
+dollari, sterline, allaccia scarpa, scarpallaccia, dico d'albergo, ma tu? 
+Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse per andicappo di 
+altitudine. No? Ah, vuol dire che il telefono è troppo alto? Mo basta insomma! 
+Qui c’è gente che soffre per davvero, lo capite? Chiamo il medico di turno e 
+domani ve la vedrete con il professore! Guardi, le ho ritagliato quell'articolo 
+sul Casentino. Ma lei se la blinda la supercazzola prematurata come se fosse 
+anche un po' di Casentino che perdura anche come cappotto; vede, m'importa.}
+
+\@@_newpara:n {No, no... non era troppo alto. Forse non ha capito. Io dicevo 
+che se fosse il coso di telefono, o il dito, come se fosse. Andando su o giù, 
+giù o su. Come se fosse antani anche per lei soltanto in due, oppure in 
+quattro anche scribai con cofandina; come antifurto, per esempio. Ma allora io 
+le potrei dire anche con il rispetto per l'autorità, che anche soltanto le due 
+cose come vice-sindaco, capisce? Sorella? Eh!? Col tarapia tapioco come se 
+fosse la supercazzola per lei. Voglio il cappellano, il cappellano! Ho visto la 
+Madonna!}
+
+\@@_newpara:n {Vicesindaco? Basta 'osì, mi seguano al commissariato! No, no, 
+no, attenzione, noo! Pattene soppaltate secondo l'articolo 12 abbia pazienza, 
+sennò, posterdati, per due, anche un pochino antani in prefettura... senza 
+contare che la supercazzola prematurata ha perso i contatti col tarapio 
+tapioco. Vicesindaco? Basta 'osì, mi seguano al commissariato! No, no, no, 
+attenzione, noo! Segua col dito. Vede, se va giù non va su. Se va su non va 
+giù. Si faccia aiutare dalla suora. È quello che stavo dicendo, no!?}
+
+\@@_newpara:n {Ho capito. Tre applicazioni di afasol, di un’ora l’una. 
+Subito! Che c’è? Ehm... blinda la supercazzola con scappellamento a sinistra 
+e a destra come se fossero dei pentoloni. Segua col dito. Vede, se va giù non 
+va su. Se va su non va giù. Si faccia aiutare dalla suora. È quello che stavo 
+dicendo, no!? Ho capito. Tre applicazioni di afasol, di un’ora l’una. 
+Subito! Che c’è? Ehm... blinda la supercazzola con scappellamento a sinistra 
+e a destra come se fossero dei pentoloni. Ho capito. Tre applicazioni di 
+afasol, di un’ora l’una. Subito! Che c’è? Ehm... blinda la supercazzola 
+con scappellamento a sinistra e a destra come se fossero dei pentoloni.}
+
+\@@_newpara:n {Ma allora io le potrei dire anche con il rispetto per 
+l'autorità, che anche soltanto le due cose come vice-sindaco, capisce? Ah, 
+pardon. Tarapio tapioco come se fosse Antani, la supercazzola prematurata con 
+dominus reveriscum blinda. Come, prego? Tarapio sulla supercazzola con 
+scappellamento destro o sinistra? Sorella? Eh!? Col tarapia tapioco come se 
+fosse la supercazzola per lei. Voglio il cappellano, il cappellano! Ho visto la 
+Madonna! Ho provato con la supercazzola con scappellamento paraplegico a 
+sinistra, ma non funzionava, faceva tu-tu. In che senso? Nel senso anafestico. 
+Eh, sì; come farà di capo d'altitudine, no?}
+
+\@@_newpara:n {Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse per 
+andicappo di altitudine. No? Ah, vuol dire che il telefono è troppo alto? Ah, 
+pardon. Tarapio tapioco come se fosse Antani, la supercazzola prematurata con 
+dominus reveriscum blinda. Come, prego? Tarapio sulla supercazzola con 
+scappellamento destro o sinistra? Mi scusi, Antani come se fosse di 
+scappellamento tarapio tapioco scappellamento di forestieri? Va be', siete 
+forestieri, ma i cartelli sono internazionali. Mi può mostrare la sua patente, 
+per favore? Si, ma la sbiriguda della sbrindellona come se fosse antani come 
+faceva? Prego? Ho provato con la supercazzola con scappelamento paraplegico a 
+sinistra, ma non funzionava.}
+
+\@@_newpara:n {Carmensita, amore mio, sono un uomo d'affari, blinda la 
+supercazzola prematurata, una cosa d'assegni, tarapia tapioca, tapioca torapia, 
+dollari, sterline, allaccia scarpa, scarpallaccia, dico d'albergo, ma tu? Ho 
+provato con la supercazzola con scappellamento paraplegico a sinistra, ma non 
+funzionava, faceva tu-tu. In che senso? Nel senso anafestico. Eh, sì; come 
+farà di capo d'altitudine, no? Come se fosse antani anche per lei soltanto in 
+due, oppure in quattro anche scribai con cofandina; come antifurto, per 
+esempio. Ma allora io le potrei dire anche con il rispetto per l'autorità, che 
+anche soltanto le due cose come vice-sindaco, capisce?}
+
+\@@_newpara:n {Ho capito. Tre applicazioni di afasol, di un’ora l’una. 
+Subito! Che c’è? Ehm... blinda la supercazzola con scappellamento a sinistra 
+e a destra come se fossero dei pentoloni. Vicesindaco? Basta 'osì, mi seguano 
+al commissariato! No, no, no, attenzione, noo! Ah, pardon. Tarapio tapioco come 
+se fosse Antani, la supercazzola prematurata con dominus reveriscum blinda. 
+Come, prego? Tarapio sulla supercazzola con scappellamento destro o sinistra? 
+Ah, pardon. Tarapio tapioco come se fosse Antani, la supercazzola prematurata 
+con dominus reveriscum blinda. Come, prego? Tarapio sulla supercazzola con 
+scappellamento destro o sinistra?}
+
+\@@_newpara:n {Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Quante volte figliolo? Fifty fifty, prematinea 
+come fosse mea culpa. Alla supercazzola. Carmensita, amore mio, sono un uomo 
+d'affari, blinda la supercazzola prematurata, una cosa d'assegni, tarapia 
+tapioca, tapioca torapia, dollari, sterline, allaccia scarpa, scarpallaccia, 
+dico d'albergo, ma tu? Si, ma la sbiriguda della sbrindellona come se fosse 
+antani come faceva? Prego? Ho provato con la supercazzola con scappelamento 
+paraplegico a sinistra, ma non funzionava. Faceva Du-Du! In che senso? Nel 
+senso anafestico! Si, forse per andicappo di altitudine. No? Ah, vuol dire che 
+il telefono è troppo alto?}
+
+\@@_newpara:n {Mo basta insomma! Qui c’è gente che soffre per davvero, lo 
+capite? Chiamo il medico di turno e domani ve la vedrete con il professore! Ho 
+provato con la supercazzola con scappellamento paraplegico a sinistra, ma non 
+funzionava, faceva tu-tu. In che senso? Nel senso anafestico. Eh, sì; come 
+farà di capo d'altitudine, no? Ma che antifurto, mi faccia il piacere! Questi 
+signori qui stavano sonando loro. Si, ma la sbiriguda della sbrindellona come 
+se fosse antani come faceva? Prego? Ho provato con la supercazzola con 
+scappelamento paraplegico a sinistra, ma non funzionava.}
+
+\@@_newpara:n {Dimmi figliolo. Sbiliguda veniale con la supercazzola 
+prematurata. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Faceva Du-Du! In che senso? Nel senso anafestico! 
+Si, forse per andicappo di altitudine. No? Ah, vuol dire che il telefono è 
+troppo alto? Ma che antifurto, mi faccia il piacere! Questi signori qui stavano 
+sonando loro. Ah, pardon. Tarapio tapioco come se fosse Antani, la supercazzola 
+prematurata con dominus reveriscum blinda. Come, prego? Tarapio sulla 
+supercazzola con scappellamento destro o sinistra?}
+
+\@@_newpara:n {Guardi, le ho ritagliato quell'articolo sul Casentino. Ma lei se 
+la blinda la supercazzola prematurata come se fosse anche un po' di Casentino 
+che perdura anche come cappotto; vede, m'importa. Guardi, le ho ritagliato 
+quell'articolo sul Casentino. Ma lei se la blinda la supercazzola prematurata 
+come se fosse anche un po' di Casentino che perdura anche come cappotto; vede, 
+m'importa. Sorella? Eh!? Col tarapia tapioco come se fosse la supercazzola per 
+lei. Voglio il cappellano, il cappellano! Ho visto la Madonna! Segua col dito. 
+Vede, se va giù non va su. Se va su non va giù. Si faccia aiutare dalla 
+suora. È quello che stavo dicendo, no!?}
+
+\@@_newpara:n {Che non si ripeta più, vada pure! Senz'altro!!! Tarapia 
+tapioco! Brematurata la supercazzola o scherziamo? Prego? No, mi permetta. No, 
+io, scusi noi siamo in quattro. Segua col dito. Vede, se va giù non va su. Se 
+va su non va giù. Si faccia aiutare dalla suora. È quello che stavo dicendo, 
+no!? Che non si ripeta più, vada pure! Senz'altro!!! Tarapia tapioco! 
+Brematurata la supercazzola o scherziamo? Prego? No, mi permetta. No, io, scusi 
+noi siamo in quattro. Ho provato con la supercazzola con scappellamento 
+paraplegico a sinistra, ma non funzionava, faceva tu-tu. In che senso? Nel 
+senso anafestico. Eh, sì; come farà di capo d'altitudine, no?}
+
+\@@_newpara:n {Dimmi figliolo. Sbiliguda veniale con la supercazzola 
+prematurata. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Carmensita, amore mio, sono un uomo d'affari, 
+blinda la supercazzola prematurata, una cosa d'assegni, tarapia tapioca, 
+tapioca torapia, dollari, sterline, allaccia scarpa, scarpallaccia, dico 
+d'albergo, ma tu? Si, ma la sbiriguda della sbrindellona come se fosse antani 
+come faceva? Prego? Ho provato con la supercazzola con scappelamento 
+paraplegico a sinistra, ma non funzionava. Segua col dito. Vede, se va giù non 
+va su. Se va su non va giù. Si faccia aiutare dalla suora. È quello che stavo 
+dicendo, no!?}
+
+\@@_newpara:n {Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse per 
+andicappo di altitudine. No? Ah, vuol dire che il telefono è troppo alto? Come 
+figliolo? Confesso come fosse antani con scappellamento a destra costantinato 
+ammaliti. Quante volte figliolo? Fifty fifty, prematinea come fosse mea culpa. 
+Alla supercazzola. Come se fosse antani anche per lei soltanto in due, oppure 
+in quattro anche scribai con cofandina; come antifurto, per esempio. Come se 
+fosse antani anche per lei soltanto in due, oppure in quattro anche scribai con 
+cofandina; come antifurto, per esempio.}
+
+\@@_newpara:n {Sorella? Eh!? Col tarapia tapioco come se fosse la supercazzola 
+per lei. Voglio il cappellano, il cappellano! Ho visto la Madonna! Come se 
+fosse antani anche per lei soltanto in due, oppure in quattro anche scribai con 
+cofandina; come antifurto, per esempio. Dimmi figliolo. Sbiliguda veniale con 
+la supercazzola prematurata. Come figliolo? Confesso come fosse antani con 
+scappellamento a destra costantinato ammaliti. Ah, pardon. Tarapio tapioco come 
+se fosse Antani, la supercazzola prematurata con dominus reveriscum blinda. 
+Come, prego? Tarapio sulla supercazzola con scappellamento destro o sinistra?}
+
+\@@_newpara:n {Ah, pardon. Tarapio tapioco come se fosse Antani, la 
+supercazzola prematurata con dominus reveriscum blinda. Come, prego? Tarapio 
+sulla supercazzola con scappellamento destro o sinistra? Vicesindaco? Basta 
+'osì, mi seguano al commissariato! No, no, no, attenzione, noo! Faceva Du-Du! 
+In che senso? Nel senso anafestico! Si, forse per andicappo di altitudine. No? 
+Ah, vuol dire che il telefono è troppo alto? Che non si ripeta più, vada 
+pure! Senz'altro!!! Tarapia tapioco! Brematurata la supercazzola o scherziamo? 
+Prego? No, mi permetta. No, io, scusi noi siamo in quattro.}
+
+\@@_newpara:n {E lei... cosa si sente? Professore, non le dico. Antani come 
+trazione per due anche se fosse supercazzola bitumata, ha lo scappellamento a 
+destra. Ho capito. Tre applicazioni di afasol, di un’ora l’una. Subito! Che 
+c’è? Ehm... blinda la supercazzola con scappellamento a sinistra e a destra 
+come se fossero dei pentoloni. Ma che antifurto, mi faccia il piacere! Questi 
+signori qui stavano sonando loro. Mo basta insomma! Qui c’è gente che soffre 
+per davvero, lo capite? Chiamo il medico di turno e domani ve la vedrete con il 
+professore!}
+
+\@@_newpara:n {No, no... non era troppo alto. Forse non ha capito. Io dicevo 
+che se fosse il coso di telefono, o il dito, come se fosse. Andando su o giù, 
+giù o su. Come se fosse antani anche per lei soltanto in due, oppure in 
+quattro anche scribai con cofandina; come antifurto, per esempio. Ho provato 
+con la supercazzola con scappellamento paraplegico a sinistra, ma non 
+funzionava, faceva tu-tu. In che senso? Nel senso anafestico. Eh, sì; come 
+farà di capo d'altitudine, no? Carmensita, amore mio, sono un uomo d'affari, 
+blinda la supercazzola prematurata, una cosa d'assegni, tarapia tapioca, 
+tapioca torapia, dollari, sterline, allaccia scarpa, scarpallaccia, dico 
+d'albergo, ma tu?}
+
+\@@_newpara:n {Come se fosse antani anche per lei soltanto in due, oppure in 
+quattro anche scribai con cofandina; come antifurto, per esempio. Non si 
+intrometta! No, aspetti, mi porga l'indice; ecco lo alzi così... guardi, 
+guardi, guardi; lo vede il dito? Lo vede che stuzzica, che prematura anche. 
+Come se fosse antani anche per lei soltanto in due, oppure in quattro anche 
+scribai con cofandina; come antifurto, per esempio. Pattene soppaltate secondo 
+l'articolo 12 abbia pazienza, sennò, posterdati, per due, anche un pochino 
+antani in prefettura... senza contare che la supercazzola prematurata ha perso 
+i contatti col tarapio tapioco.}
+
+\@@_newpara:n {Dimmi figliolo. Sbiliguda veniale con la supercazzola 
+prematurata. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Faceva Du-Du! In che senso? Nel senso anafestico! 
+Si, forse per andicappo di altitudine. No? Ah, vuol dire che il telefono è 
+troppo alto? Mi scusi, Antani come se fosse di scappellamento tarapio tapioco 
+scappellamento di forestieri? Va be', siete forestieri, ma i cartelli sono 
+internazionali. Mi può mostrare la sua patente, per favore? Come figliolo? 
+Confesso come fosse antani con scappellamento a destra costantinato ammaliti. 
+Quante volte figliolo? Fifty fifty, prematinea come fosse mea culpa. Alla 
+supercazzola.}
+
+\@@_newpara:n {Pattene soppaltate secondo l'articolo 12 abbia pazienza, sennò, 
+posterdati, per due, anche un pochino antani in prefettura... senza contare che 
+la supercazzola prematurata ha perso i contatti col tarapio tapioco. 
+Vicesindaco? Basta 'osì, mi seguano al commissariato! No, no, no, attenzione, 
+noo! Come se fosse antani anche per lei soltanto in due, oppure in quattro 
+anche scribai con cofandina; come antifurto, per esempio. Non si intrometta! 
+No, aspetti, mi porga l'indice; ecco lo alzi così... guardi, guardi, guardi; 
+lo vede il dito? Lo vede che stuzzica, che prematura anche.}
+
+\@@_newpara:n {Come se fosse antani anche per lei soltanto in due, oppure in 
+quattro anche scribai con cofandina; come antifurto, per esempio. Segua col 
+dito. Vede, se va giù non va su. Se va su non va giù. Si faccia aiutare dalla 
+suora. È quello che stavo dicendo, no!? Non si intrometta! No, aspetti, mi 
+porga l'indice; ecco lo alzi così... guardi, guardi, guardi; lo vede il dito? 
+Lo vede che stuzzica, che prematura anche. Faceva Du-Du! In che senso? Nel 
+senso anafestico! Si, forse per andicappo di altitudine. No? Ah, vuol dire che 
+il telefono è troppo alto?}
+
+\@@_newpara:n {Ma che antifurto, mi faccia il piacere! Questi signori qui 
+stavano sonando loro. Guardi, le ho ritagliato quell'articolo sul Casentino. Ma 
+lei se la blinda la supercazzola prematurata come se fosse anche un po' di 
+Casentino che perdura anche come cappotto; vede, m'importa. Sorella? Eh!? Col 
+tarapia tapioco come se fosse la supercazzola per lei. Voglio il cappellano, il 
+cappellano! Ho visto la Madonna! Mi scusi, Antani come se fosse di 
+scappellamento tarapio tapioco scappellamento di forestieri? Va be', siete 
+forestieri, ma i cartelli sono internazionali. Mi può mostrare la sua patente, 
+per favore?}
+
+\@@_newpara:n {Come se fosse antani anche per lei soltanto in due, oppure in 
+quattro anche scribai con cofandina; come antifurto, per esempio. Non si 
+intrometta! No, aspetti, mi porga l'indice; ecco lo alzi così... guardi, 
+guardi, guardi; lo vede il dito? Lo vede che stuzzica, che prematura anche. Che 
+non si ripeta più, vada pure! Senz'altro!!! Tarapia tapioco! Brematurata la 
+supercazzola o scherziamo? Prego? No, mi permetta. No, io, scusi noi siamo in 
+quattro. Vicesindaco? Basta 'osì, mi seguano al commissariato! No, no, no, 
+attenzione, noo!}
+
+\@@_newpara:n {Vicesindaco? Basta 'osì, mi seguano al commissariato! No, no, 
+no, attenzione, noo! Ma allora io le potrei dire anche con il rispetto per 
+l'autorità, che anche soltanto le due cose come vice-sindaco, capisce? Mo 
+basta insomma! Qui c’è gente che soffre per davvero, lo capite? Chiamo il 
+medico di turno e domani ve la vedrete con il professore! Ho capito. Tre 
+applicazioni di afasol, di un’ora l’una. Subito! Che c’è? Ehm... blinda 
+la supercazzola con scappellamento a sinistra e a destra come se fossero dei 
+pentoloni.}
+
+\@@_newpara:n {Mi scusi, Antani come se fosse di scappellamento tarapio tapioco 
+scappellamento di forestieri? Va be', siete forestieri, ma i cartelli sono 
+internazionali. Mi può mostrare la sua patente, per favore? Come figliolo? 
+Confesso come fosse antani con scappellamento a destra costantinato ammaliti. 
+Quante volte figliolo? Fifty fifty, prematinea come fosse mea culpa. Alla 
+supercazzola. Ma che antifurto, mi faccia il piacere! Questi signori qui 
+stavano sonando loro. Pattene soppaltate secondo l'articolo 12 abbia pazienza, 
+sennò, posterdati, per due, anche un pochino antani in prefettura... senza 
+contare che la supercazzola prematurata ha perso i contatti col tarapio 
+tapioco.}
+
+\@@_newpara:n {Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Quante volte figliolo? Fifty fifty, prematinea 
+come fosse mea culpa. Alla supercazzola. Ma allora io le potrei dire anche con 
+il rispetto per l'autorità, che anche soltanto le due cose come vice-sindaco, 
+capisce? Che non si ripeta più, vada pure! Senz'altro!!! Tarapia tapioco! 
+Brematurata la supercazzola o scherziamo? Prego? No, mi permetta. No, io, scusi 
+noi siamo in quattro. No, no... non era troppo alto. Forse non ha capito. Io 
+dicevo che se fosse il coso di telefono, o il dito, come se fosse. Andando su o 
+giù, giù o su.}
+
+\@@_newpara:n {No, no... non era troppo alto. Forse non ha capito. Io dicevo 
+che se fosse il coso di telefono, o il dito, come se fosse. Andando su o giù, 
+giù o su. Come se fosse antani anche per lei soltanto in due, oppure in 
+quattro anche scribai con cofandina; come antifurto, per esempio. Sorella? Eh!? 
+Col tarapia tapioco come se fosse la supercazzola per lei. Voglio il 
+cappellano, il cappellano! Ho visto la Madonna! Faceva Du-Du! In che senso? Nel 
+senso anafestico! Si, forse per andicappo di altitudine. No? Ah, vuol dire che 
+il telefono è troppo alto?}
+
+\@@_newpara:n {Carmensita, amore mio, sono un uomo d'affari, blinda la 
+supercazzola prematurata, una cosa d'assegni, tarapia tapioca, tapioca torapia, 
+dollari, sterline, allaccia scarpa, scarpallaccia, dico d'albergo, ma tu? Si, 
+ma la sbiriguda della sbrindellona come se fosse antani come faceva? Prego? Ho 
+provato con la supercazzola con scappelamento paraplegico a sinistra, ma non 
+funzionava. Ho capito. Tre applicazioni di afasol, di un’ora l’una. Subito! 
+Che c’è? Ehm... blinda la supercazzola con scappellamento a sinistra e a 
+destra come se fossero dei pentoloni. Mo basta insomma! Qui c’è gente che 
+soffre per davvero, lo capite? Chiamo il medico di turno e domani ve la vedrete 
+con il professore!}
+
+\@@_newpara:n {Segua col dito. Vede, se va giù non va su. Se va su non va 
+giù. Si faccia aiutare dalla suora. È quello che stavo dicendo, no!? Non si 
+intrometta! No, aspetti, mi porga l'indice; ecco lo alzi così... guardi, 
+guardi, guardi; lo vede il dito? Lo vede che stuzzica, che prematura anche. Ma 
+che antifurto, mi faccia il piacere! Questi signori qui stavano sonando loro. 
+Pattene soppaltate secondo l'articolo 12 abbia pazienza, sennò, posterdati, 
+per due, anche un pochino antani in prefettura... senza contare che la 
+supercazzola prematurata ha perso i contatti col tarapio tapioco.}
+
+\@@_newpara:n {Come se fosse antani anche per lei soltanto in due, oppure in 
+quattro anche scribai con cofandina; come antifurto, per esempio. Pattene 
+soppaltate secondo l'articolo 12 abbia pazienza, sennò, posterdati, per due, 
+anche un pochino antani in prefettura... senza contare che la supercazzola 
+prematurata ha perso i contatti col tarapio tapioco. Mo basta insomma! Qui 
+c’è gente che soffre per davvero, lo capite? Chiamo il medico di turno e 
+domani ve la vedrete con il professore! Ho capito. Tre applicazioni di afasol, 
+di un’ora l’una. Subito! Che c’è? Ehm... blinda la supercazzola con 
+scappellamento a sinistra e a destra come se fossero dei pentoloni.}
+
+\@@_newpara:n {Che non si ripeta più, vada pure! Senz'altro!!! Tarapia 
+tapioco! Brematurata la supercazzola o scherziamo? Prego? No, mi permetta. No, 
+io, scusi noi siamo in quattro. Guardi, le ho ritagliato quell'articolo sul 
+Casentino. Ma lei se la blinda la supercazzola prematurata come se fosse anche 
+un po' di Casentino che perdura anche come cappotto; vede, m'importa. Guardi, 
+le ho ritagliato quell'articolo sul Casentino. Ma lei se la blinda la 
+supercazzola prematurata come se fosse anche un po' di Casentino che perdura 
+anche come cappotto; vede, m'importa. Si, ma la sbiriguda della sbrindellona 
+come se fosse antani come faceva? Prego? Ho provato con la supercazzola con 
+scappelamento paraplegico a sinistra, ma non funzionava.}
+
+\@@_newpara:n {Che non si ripeta più, vada pure! Senz'altro!!! Tarapia 
+tapioco! Brematurata la supercazzola o scherziamo? Prego? No, mi permetta. No, 
+io, scusi noi siamo in quattro. Ah, pardon. Tarapio tapioco come se fosse 
+Antani, la supercazzola prematurata con dominus reveriscum blinda. Come, prego? 
+Tarapio sulla supercazzola con scappellamento destro o sinistra? Dimmi 
+figliolo. Sbiliguda veniale con la supercazzola prematurata. Come figliolo? 
+Confesso come fosse antani con scappellamento a destra costantinato ammaliti. 
+Mi scusi, Antani come se fosse di scappellamento tarapio tapioco scappellamento 
+di forestieri? Va be', siete forestieri, ma i cartelli sono internazionali. Mi 
+può mostrare la sua patente, per favore?}
+
+\@@_newpara:n {Non si intrometta! No, aspetti, mi porga l'indice; ecco lo alzi 
+così... guardi, guardi, guardi; lo vede il dito? Lo vede che stuzzica, che 
+prematura anche. Carmensita, amore mio, sono un uomo d'affari, blinda la 
+supercazzola prematurata, una cosa d'assegni, tarapia tapioca, tapioca torapia, 
+dollari, sterline, allaccia scarpa, scarpallaccia, dico d'albergo, ma tu? Ho 
+capito. Tre applicazioni di afasol, di un’ora l’una. Subito! Che c’è? 
+Ehm... blinda la supercazzola con scappellamento a sinistra e a destra come se 
+fossero dei pentoloni. Come se fosse antani anche per lei soltanto in due, 
+oppure in quattro anche scribai con cofandina; come antifurto, per esempio.}
+
+\@@_newpara:n {Mo basta insomma! Qui c’è gente che soffre per davvero, lo 
+capite? Chiamo il medico di turno e domani ve la vedrete con il professore! No, 
+no... non era troppo alto. Forse non ha capito. Io dicevo che se fosse il coso 
+di telefono, o il dito, come se fosse. Andando su o giù, giù o su. Segua col 
+dito. Vede, se va giù non va su. Se va su non va giù. Si faccia aiutare dalla 
+suora. È quello che stavo dicendo, no!? Ma che antifurto, mi faccia il 
+piacere! Questi signori qui stavano sonando loro.}
+
+\@@_newpara:n {Segua col dito. Vede, se va giù non va su. Se va su non va 
+giù. Si faccia aiutare dalla suora. È quello che stavo dicendo, no!? Ma che 
+antifurto, mi faccia il piacere! Questi signori qui stavano sonando loro. Segua 
+col dito. Vede, se va giù non va su. Se va su non va giù. Si faccia aiutare 
+dalla suora. È quello che stavo dicendo, no!? Pattene soppaltate secondo 
+l'articolo 12 abbia pazienza, sennò, posterdati, per due, anche un pochino 
+antani in prefettura... senza contare che la supercazzola prematurata ha perso 
+i contatti col tarapio tapioco.}
+
+\@@_newpara:n {Ma allora io le potrei dire anche con il rispetto per 
+l'autorità, che anche soltanto le due cose come vice-sindaco, capisce? Dimmi 
+figliolo. Sbiliguda veniale con la supercazzola prematurata. Come figliolo? 
+Confesso come fosse antani con scappellamento a destra costantinato ammaliti. 
+Che non si ripeta più, vada pure! Senz'altro!!! Tarapia tapioco! Brematurata 
+la supercazzola o scherziamo? Prego? No, mi permetta. No, io, scusi noi siamo 
+in quattro. Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse per 
+andicappo di altitudine. No? Ah, vuol dire che il telefono è troppo alto?}
+
+\@@_newpara:n {Ho capito. Tre applicazioni di afasol, di un’ora l’una. 
+Subito! Che c’è? Ehm... blinda la supercazzola con scappellamento a sinistra 
+e a destra come se fossero dei pentoloni. Dimmi figliolo. Sbiliguda veniale con 
+la supercazzola prematurata. Come figliolo? Confesso come fosse antani con 
+scappellamento a destra costantinato ammaliti. Guardi, le ho ritagliato 
+quell'articolo sul Casentino. Ma lei se la blinda la supercazzola prematurata 
+come se fosse anche un po' di Casentino che perdura anche come cappotto; vede, 
+m'importa. Che non si ripeta più, vada pure! Senz'altro!!! Tarapia tapioco! 
+Brematurata la supercazzola o scherziamo? Prego? No, mi permetta. No, io, scusi 
+noi siamo in quattro.}
+
+\@@_newpara:n {Si, ma la sbiriguda della sbrindellona come se fosse antani come 
+faceva? Prego? Ho provato con la supercazzola con scappelamento paraplegico a 
+sinistra, ma non funzionava. Sorella? Eh!? Col tarapia tapioco come se fosse la 
+supercazzola per lei. Voglio il cappellano, il cappellano! Ho visto la Madonna! 
+E lei... cosa si sente? Professore, non le dico. Antani come trazione per due 
+anche se fosse supercazzola bitumata, ha lo scappellamento a destra. Pattene 
+soppaltate secondo l'articolo 12 abbia pazienza, sennò, posterdati, per due, 
+anche un pochino antani in prefettura... senza contare che la supercazzola 
+prematurata ha perso i contatti col tarapio tapioco.}
+
+\@@_newpara:n {E lei... cosa si sente? Professore, non le dico. Antani come 
+trazione per due anche se fosse supercazzola bitumata, ha lo scappellamento a 
+destra. Come se fosse antani anche per lei soltanto in due, oppure in quattro 
+anche scribai con cofandina; come antifurto, per esempio. Si, ma la sbiriguda 
+della sbrindellona come se fosse antani come faceva? Prego? Ho provato con la 
+supercazzola con scappelamento paraplegico a sinistra, ma non funzionava. Ho 
+capito. Tre applicazioni di afasol, di un’ora l’una. Subito! Che c’è? 
+Ehm... blinda la supercazzola con scappellamento a sinistra e a destra come se 
+fossero dei pentoloni.}
+
+\@@_newpara:n {Ho provato con la supercazzola con scappellamento paraplegico a 
+sinistra, ma non funzionava, faceva tu-tu. In che senso? Nel senso anafestico. 
+Eh, sì; come farà di capo d'altitudine, no? Come se fosse antani anche per 
+lei soltanto in due, oppure in quattro anche scribai con cofandina; come 
+antifurto, per esempio. E lei... cosa si sente? Professore, non le dico. Antani 
+come trazione per due anche se fosse supercazzola bitumata, ha lo 
+scappellamento a destra. Dimmi figliolo. Sbiliguda veniale con la supercazzola 
+prematurata. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti.}
+
+\@@_newpara:n {Segua col dito. Vede, se va giù non va su. Se va su non va 
+giù. Si faccia aiutare dalla suora. È quello che stavo dicendo, no!? Mo basta 
+insomma! Qui c’è gente che soffre per davvero, lo capite? Chiamo il medico 
+di turno e domani ve la vedrete con il professore! Come se fosse antani anche 
+per lei soltanto in due, oppure in quattro anche scribai con cofandina; come 
+antifurto, per esempio. Che non si ripeta più, vada pure! Senz'altro!!! 
+Tarapia tapioco! Brematurata la supercazzola o scherziamo? Prego? No, mi 
+permetta. No, io, scusi noi siamo in quattro.}
+
+\@@_newpara:n {Non si intrometta! No, aspetti, mi porga l'indice; ecco lo alzi 
+così... guardi, guardi, guardi; lo vede il dito? Lo vede che stuzzica, che 
+prematura anche. Non si intrometta! No, aspetti, mi porga l'indice; ecco lo 
+alzi così... guardi, guardi, guardi; lo vede il dito? Lo vede che stuzzica, 
+che prematura anche. Carmensita, amore mio, sono un uomo d'affari, blinda la 
+supercazzola prematurata, una cosa d'assegni, tarapia tapioca, tapioca torapia, 
+dollari, sterline, allaccia scarpa, scarpallaccia, dico d'albergo, ma tu? 
+Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse per andicappo di 
+altitudine. No? Ah, vuol dire che il telefono è troppo alto?}
+
+\@@_newpara:n {Si, ma la sbiriguda della sbrindellona come se fosse antani come 
+faceva? Prego? Ho provato con la supercazzola con scappelamento paraplegico a 
+sinistra, ma non funzionava. Come figliolo? Confesso come fosse antani con 
+scappellamento a destra costantinato ammaliti. Quante volte figliolo? Fifty 
+fifty, prematinea come fosse mea culpa. Alla supercazzola. Come figliolo? 
+Confesso come fosse antani con scappellamento a destra costantinato ammaliti. 
+Quante volte figliolo? Fifty fifty, prematinea come fosse mea culpa. Alla 
+supercazzola. Come se fosse antani anche per lei soltanto in due, oppure in 
+quattro anche scribai con cofandina; come antifurto, per esempio.}
+
+\@@_newpara:n {Ah, pardon. Tarapio tapioco come se fosse Antani, la 
+supercazzola prematurata con dominus reveriscum blinda. Come, prego? Tarapio 
+sulla supercazzola con scappellamento destro o sinistra? Ho capito. Tre 
+applicazioni di afasol, di un’ora l’una. Subito! Che c’è? Ehm... blinda 
+la supercazzola con scappellamento a sinistra e a destra come se fossero dei 
+pentoloni. Non si intrometta! No, aspetti, mi porga l'indice; ecco lo alzi 
+così... guardi, guardi, guardi; lo vede il dito? Lo vede che stuzzica, che 
+prematura anche. Segua col dito. Vede, se va giù non va su. Se va su non va 
+giù. Si faccia aiutare dalla suora. È quello che stavo dicendo, no!?}
+
+\@@_newpara:n {Non si intrometta! No, aspetti, mi porga l'indice; ecco lo alzi 
+così... guardi, guardi, guardi; lo vede il dito? Lo vede che stuzzica, che 
+prematura anche. Che non si ripeta più, vada pure! Senz'altro!!! Tarapia 
+tapioco! Brematurata la supercazzola o scherziamo? Prego? No, mi permetta. No, 
+io, scusi noi siamo in quattro. Come se fosse antani anche per lei soltanto in 
+due, oppure in quattro anche scribai con cofandina; come antifurto, per 
+esempio. E lei... cosa si sente? Professore, non le dico. Antani come trazione 
+per due anche se fosse supercazzola bitumata, ha lo scappellamento a destra.}
+
+\@@_newpara:n {Come se fosse antani anche per lei soltanto in due, oppure in 
+quattro anche scribai con cofandina; come antifurto, per esempio. Pattene 
+soppaltate secondo l'articolo 12 abbia pazienza, sennò, posterdati, per due, 
+anche un pochino antani in prefettura... senza contare che la supercazzola 
+prematurata ha perso i contatti col tarapio tapioco. E lei... cosa si sente? 
+Professore, non le dico. Antani come trazione per due anche se fosse 
+supercazzola bitumata, ha lo scappellamento a destra. Ho capito. Tre 
+applicazioni di afasol, di un’ora l’una. Subito! Che c’è? Ehm... blinda 
+la supercazzola con scappellamento a sinistra e a destra come se fossero dei 
+pentoloni.}
+
+\@@_newpara:n {Si, ma la sbiriguda della sbrindellona come se fosse antani come 
+faceva? Prego? Ho provato con la supercazzola con scappelamento paraplegico a 
+sinistra, ma non funzionava. Che non si ripeta più, vada pure! Senz'altro!!! 
+Tarapia tapioco! Brematurata la supercazzola o scherziamo? Prego? No, mi 
+permetta. No, io, scusi noi siamo in quattro. Segua col dito. Vede, se va giù 
+non va su. Se va su non va giù. Si faccia aiutare dalla suora. È quello che 
+stavo dicendo, no!? Come se fosse antani anche per lei soltanto in due, oppure 
+in quattro anche scribai con cofandina; come antifurto, per esempio.}
+
+\@@_newpara:n {Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse per 
+andicappo di altitudine. No? Ah, vuol dire che il telefono è troppo alto? 
+Sorella? Eh!? Col tarapia tapioco come se fosse la supercazzola per lei. Voglio 
+il cappellano, il cappellano! Ho visto la Madonna! Mi scusi, Antani come se 
+fosse di scappellamento tarapio tapioco scappellamento di forestieri? Va be', 
+siete forestieri, ma i cartelli sono internazionali. Mi può mostrare la sua 
+patente, per favore? Come se fosse antani anche per lei soltanto in due, oppure 
+in quattro anche scribai con cofandina; come antifurto, per esempio.}
+
+\@@_newpara:n {No, no... non era troppo alto. Forse non ha capito. Io dicevo 
+che se fosse il coso di telefono, o il dito, come se fosse. Andando su o giù, 
+giù o su. Segua col dito. Vede, se va giù non va su. Se va su non va giù. Si 
+faccia aiutare dalla suora. È quello che stavo dicendo, no!? Come figliolo? 
+Confesso come fosse antani con scappellamento a destra costantinato ammaliti. 
+Quante volte figliolo? Fifty fifty, prematinea come fosse mea culpa. Alla 
+supercazzola. E lei... cosa si sente? Professore, non le dico. Antani come 
+trazione per due anche se fosse supercazzola bitumata, ha lo scappellamento a 
+destra.}
+
+\@@_newpara:n {Ho provato con la supercazzola con scappellamento paraplegico a 
+sinistra, ma non funzionava, faceva tu-tu. In che senso? Nel senso anafestico. 
+Eh, sì; come farà di capo d'altitudine, no? Vicesindaco? Basta 'osì, mi 
+seguano al commissariato! No, no, no, attenzione, noo! Ho provato con la 
+supercazzola con scappellamento paraplegico a sinistra, ma non funzionava, 
+faceva tu-tu. In che senso? Nel senso anafestico. Eh, sì; come farà di capo 
+d'altitudine, no? Ma allora io le potrei dire anche con il rispetto per 
+l'autorità, che anche soltanto le due cose come vice-sindaco, capisce?}
+
+\@@_newpara:n {Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse per 
+andicappo di altitudine. No? Ah, vuol dire che il telefono è troppo alto? E 
+lei... cosa si sente? Professore, non le dico. Antani come trazione per due 
+anche se fosse supercazzola bitumata, ha lo scappellamento a destra. Faceva 
+Du-Du! In che senso? Nel senso anafestico! Si, forse per andicappo di 
+altitudine. No? Ah, vuol dire che il telefono è troppo alto? Ma che antifurto, 
+mi faccia il piacere! Questi signori qui stavano sonando loro.}
+
+\@@_newpara:n {Guardi, le ho ritagliato quell'articolo sul Casentino. Ma lei se 
+la blinda la supercazzola prematurata come se fosse anche un po' di Casentino 
+che perdura anche come cappotto; vede, m'importa. Come se fosse antani anche 
+per lei soltanto in due, oppure in quattro anche scribai con cofandina; come 
+antifurto, per esempio. Sorella? Eh!? Col tarapia tapioco come se fosse la 
+supercazzola per lei. Voglio il cappellano, il cappellano! Ho visto la Madonna! 
+Dimmi figliolo. Sbiliguda veniale con la supercazzola prematurata. Come 
+figliolo? Confesso come fosse antani con scappellamento a destra costantinato 
+ammaliti.}
+
+\@@_newpara:n {No, no... non era troppo alto. Forse non ha capito. Io dicevo 
+che se fosse il coso di telefono, o il dito, come se fosse. Andando su o giù, 
+giù o su. Pattene soppaltate secondo l'articolo 12 abbia pazienza, sennò, 
+posterdati, per due, anche un pochino antani in prefettura... senza contare che 
+la supercazzola prematurata ha perso i contatti col tarapio tapioco. Dimmi 
+figliolo. Sbiliguda veniale con la supercazzola prematurata. Come figliolo? 
+Confesso come fosse antani con scappellamento a destra costantinato ammaliti. 
+Ah, pardon. Tarapio tapioco come se fosse Antani, la supercazzola prematurata 
+con dominus reveriscum blinda. Come, prego? Tarapio sulla supercazzola con 
+scappellamento destro o sinistra?}
+
+\@@_newpara:n {Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Quante volte figliolo? Fifty fifty, prematinea 
+come fosse mea culpa. Alla supercazzola. Non si intrometta! No, aspetti, mi 
+porga l'indice; ecco lo alzi così... guardi, guardi, guardi; lo vede il dito? 
+Lo vede che stuzzica, che prematura anche. Pattene soppaltate secondo 
+l'articolo 12 abbia pazienza, sennò, posterdati, per due, anche un pochino 
+antani in prefettura... senza contare che la supercazzola prematurata ha perso 
+i contatti col tarapio tapioco. Come se fosse antani anche per lei soltanto in 
+due, oppure in quattro anche scribai con cofandina; come antifurto, per 
+esempio.}
+
+\@@_newpara:n {Ho provato con la supercazzola con scappellamento paraplegico a 
+sinistra, ma non funzionava, faceva tu-tu. In che senso? Nel senso anafestico. 
+Eh, sì; come farà di capo d'altitudine, no? E lei... cosa si sente? 
+Professore, non le dico. Antani come trazione per due anche se fosse 
+supercazzola bitumata, ha lo scappellamento a destra. Ma allora io le potrei 
+dire anche con il rispetto per l'autorità, che anche soltanto le due cose come 
+vice-sindaco, capisce? Carmensita, amore mio, sono un uomo d'affari, blinda la 
+supercazzola prematurata, una cosa d'assegni, tarapia tapioca, tapioca torapia, 
+dollari, sterline, allaccia scarpa, scarpallaccia, dico d'albergo, ma tu?}
+
+\@@_newpara:n {Guardi, le ho ritagliato quell'articolo sul Casentino. Ma lei se 
+la blinda la supercazzola prematurata come se fosse anche un po' di Casentino 
+che perdura anche come cappotto; vede, m'importa. Ho provato con la 
+supercazzola con scappellamento paraplegico a sinistra, ma non funzionava, 
+faceva tu-tu. In che senso? Nel senso anafestico. Eh, sì; come farà di capo 
+d'altitudine, no? Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse 
+per andicappo di altitudine. No? Ah, vuol dire che il telefono è troppo alto? 
+Che non si ripeta più, vada pure! Senz'altro!!! Tarapia tapioco! Brematurata 
+la supercazzola o scherziamo? Prego? No, mi permetta. No, io, scusi noi siamo 
+in quattro.}
+
+\@@_newpara:n {E lei... cosa si sente? Professore, non le dico. Antani come 
+trazione per due anche se fosse supercazzola bitumata, ha lo scappellamento a 
+destra. Pattene soppaltate secondo l'articolo 12 abbia pazienza, sennò, 
+posterdati, per due, anche un pochino antani in prefettura... senza contare che 
+la supercazzola prematurata ha perso i contatti col tarapio tapioco. Mo basta 
+insomma! Qui c’è gente che soffre per davvero, lo capite? Chiamo il medico 
+di turno e domani ve la vedrete con il professore! Ho capito. Tre applicazioni 
+di afasol, di un’ora l’una. Subito! Che c’è? Ehm... blinda la 
+supercazzola con scappellamento a sinistra e a destra come se fossero dei 
+pentoloni.}
+
+\@@_newpara:n {Ah, pardon. Tarapio tapioco come se fosse Antani, la 
+supercazzola prematurata con dominus reveriscum blinda. Come, prego? Tarapio 
+sulla supercazzola con scappellamento destro o sinistra? Mo basta insomma! Qui 
+c’è gente che soffre per davvero, lo capite? Chiamo il medico di turno e 
+domani ve la vedrete con il professore! Faceva Du-Du! In che senso? Nel senso 
+anafestico! Si, forse per andicappo di altitudine. No? Ah, vuol dire che il 
+telefono è troppo alto? Come figliolo? Confesso come fosse antani con 
+scappellamento a destra costantinato ammaliti. Quante volte figliolo? Fifty 
+fifty, prematinea come fosse mea culpa. Alla supercazzola.}
+
+\@@_newpara:n {No, no... non era troppo alto. Forse non ha capito. Io dicevo 
+che se fosse il coso di telefono, o il dito, come se fosse. Andando su o giù, 
+giù o su. Segua col dito. Vede, se va giù non va su. Se va su non va giù. Si 
+faccia aiutare dalla suora. È quello che stavo dicendo, no!? Ho provato con la 
+supercazzola con scappellamento paraplegico a sinistra, ma non funzionava, 
+faceva tu-tu. In che senso? Nel senso anafestico. Eh, sì; come farà di capo 
+d'altitudine, no? Mo basta insomma! Qui c’è gente che soffre per davvero, lo 
+capite? Chiamo il medico di turno e domani ve la vedrete con il professore!}
+
+\@@_newpara:n {Ho provato con la supercazzola con scappellamento paraplegico a 
+sinistra, ma non funzionava, faceva tu-tu. In che senso? Nel senso anafestico. 
+Eh, sì; come farà di capo d'altitudine, no? Ma che antifurto, mi faccia il 
+piacere! Questi signori qui stavano sonando loro. Come se fosse antani anche 
+per lei soltanto in due, oppure in quattro anche scribai con cofandina; come 
+antifurto, per esempio. Che non si ripeta più, vada pure! Senz'altro!!! 
+Tarapia tapioco! Brematurata la supercazzola o scherziamo? Prego? No, mi 
+permetta. No, io, scusi noi siamo in quattro.}
+
+\@@_newpara:n {Ho provato con la supercazzola con scappellamento paraplegico a 
+sinistra, ma non funzionava, faceva tu-tu. In che senso? Nel senso anafestico. 
+Eh, sì; come farà di capo d'altitudine, no? Come se fosse antani anche per 
+lei soltanto in due, oppure in quattro anche scribai con cofandina; come 
+antifurto, per esempio. Dimmi figliolo. Sbiliguda veniale con la supercazzola 
+prematurata. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Si, ma la sbiriguda della sbrindellona come se 
+fosse antani come faceva? Prego? Ho provato con la supercazzola con 
+scappelamento paraplegico a sinistra, ma non funzionava.}
+
+\@@_newpara:n {Segua col dito. Vede, se va giù non va su. Se va su non va 
+giù. Si faccia aiutare dalla suora. È quello che stavo dicendo, no!? Come 
+figliolo? Confesso come fosse antani con scappellamento a destra costantinato 
+ammaliti. Quante volte figliolo? Fifty fifty, prematinea come fosse mea culpa. 
+Alla supercazzola. Ho capito. Tre applicazioni di afasol, di un’ora l’una. 
+Subito! Che c’è? Ehm... blinda la supercazzola con scappellamento a sinistra 
+e a destra come se fossero dei pentoloni. Come figliolo? Confesso come fosse 
+antani con scappellamento a destra costantinato ammaliti. Quante volte 
+figliolo? Fifty fifty, prematinea come fosse mea culpa. Alla supercazzola.}
+
+\@@_newpara:n {Carmensita, amore mio, sono un uomo d'affari, blinda la 
+supercazzola prematurata, una cosa d'assegni, tarapia tapioca, tapioca torapia, 
+dollari, sterline, allaccia scarpa, scarpallaccia, dico d'albergo, ma tu? E 
+lei... cosa si sente? Professore, non le dico. Antani come trazione per due 
+anche se fosse supercazzola bitumata, ha lo scappellamento a destra. Mo basta 
+insomma! Qui c’è gente che soffre per davvero, lo capite? Chiamo il medico 
+di turno e domani ve la vedrete con il professore! Pattene soppaltate secondo 
+l'articolo 12 abbia pazienza, sennò, posterdati, per due, anche un pochino 
+antani in prefettura... senza contare che la supercazzola prematurata ha perso 
+i contatti col tarapio tapioco.}
+
+\@@_newpara:n {Dimmi figliolo. Sbiliguda veniale con la supercazzola 
+prematurata. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Ma allora io le potrei dire anche con il rispetto 
+per l'autorità, che anche soltanto le due cose come vice-sindaco, capisce? Ho 
+provato con la supercazzola con scappellamento paraplegico a sinistra, ma non 
+funzionava, faceva tu-tu. In che senso? Nel senso anafestico. Eh, sì; come 
+farà di capo d'altitudine, no? Non si intrometta! No, aspetti, mi porga 
+l'indice; ecco lo alzi così... guardi, guardi, guardi; lo vede il dito? Lo 
+vede che stuzzica, che prematura anche.}
+
+\@@_newpara:n {Ah, pardon. Tarapio tapioco come se fosse Antani, la 
+supercazzola prematurata con dominus reveriscum blinda. Come, prego? Tarapio 
+sulla supercazzola con scappellamento destro o sinistra? Si, ma la sbiriguda 
+della sbrindellona come se fosse antani come faceva? Prego? Ho provato con la 
+supercazzola con scappelamento paraplegico a sinistra, ma non funzionava. Segua 
+col dito. Vede, se va giù non va su. Se va su non va giù. Si faccia aiutare 
+dalla suora. È quello che stavo dicendo, no!? Ma che antifurto, mi faccia il 
+piacere! Questi signori qui stavano sonando loro.}
+
+\@@_newpara:n {Ma allora io le potrei dire anche con il rispetto per 
+l'autorità, che anche soltanto le due cose come vice-sindaco, capisce? E 
+lei... cosa si sente? Professore, non le dico. Antani come trazione per due 
+anche se fosse supercazzola bitumata, ha lo scappellamento a destra. No, no... 
+non era troppo alto. Forse non ha capito. Io dicevo che se fosse il coso di 
+telefono, o il dito, come se fosse. Andando su o giù, giù o su. Pattene 
+soppaltate secondo l'articolo 12 abbia pazienza, sennò, posterdati, per due, 
+anche un pochino antani in prefettura... senza contare che la supercazzola 
+prematurata ha perso i contatti col tarapio tapioco.}
+
+\@@_newpara:n {Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Quante volte figliolo? Fifty fifty, prematinea 
+come fosse mea culpa. Alla supercazzola. Pattene soppaltate secondo l'articolo 
+12 abbia pazienza, sennò, posterdati, per due, anche un pochino antani in 
+prefettura... senza contare che la supercazzola prematurata ha perso i contatti 
+col tarapio tapioco. Che non si ripeta più, vada pure! Senz'altro!!! Tarapia 
+tapioco! Brematurata la supercazzola o scherziamo? Prego? No, mi permetta. No, 
+io, scusi noi siamo in quattro. Ho capito. Tre applicazioni di afasol, di 
+un’ora l’una. Subito! Che c’è? Ehm... blinda la supercazzola con 
+scappellamento a sinistra e a destra come se fossero dei pentoloni.}
+
+\@@_newpara:n {No, no... non era troppo alto. Forse non ha capito. Io dicevo 
+che se fosse il coso di telefono, o il dito, come se fosse. Andando su o giù, 
+giù o su. Vicesindaco? Basta 'osì, mi seguano al commissariato! No, no, no, 
+attenzione, noo! Vicesindaco? Basta 'osì, mi seguano al commissariato! No, no, 
+no, attenzione, noo! Ma che antifurto, mi faccia il piacere! Questi signori qui 
+stavano sonando loro.}
+
+\@@_newpara:n {E lei... cosa si sente? Professore, non le dico. Antani come 
+trazione per due anche se fosse supercazzola bitumata, ha lo scappellamento a 
+destra. Si, ma la sbiriguda della sbrindellona come se fosse antani come 
+faceva? Prego? Ho provato con la supercazzola con scappelamento paraplegico a 
+sinistra, ma non funzionava. Mi scusi, Antani come se fosse di scappellamento 
+tarapio tapioco scappellamento di forestieri? Va be', siete forestieri, ma i 
+cartelli sono internazionali. Mi può mostrare la sua patente, per favore? Non 
+si intrometta! No, aspetti, mi porga l'indice; ecco lo alzi così... guardi, 
+guardi, guardi; lo vede il dito? Lo vede che stuzzica, che prematura anche.}
+
+\@@_newpara:n {Carmensita, amore mio, sono un uomo d'affari, blinda la 
+supercazzola prematurata, una cosa d'assegni, tarapia tapioca, tapioca torapia, 
+dollari, sterline, allaccia scarpa, scarpallaccia, dico d'albergo, ma tu? Ho 
+capito. Tre applicazioni di afasol, di un’ora l’una. Subito! Che c’è? 
+Ehm... blinda la supercazzola con scappellamento a sinistra e a destra come se 
+fossero dei pentoloni. Mo basta insomma! Qui c’è gente che soffre per 
+davvero, lo capite? Chiamo il medico di turno e domani ve la vedrete con il 
+professore! Dimmi figliolo. Sbiliguda veniale con la supercazzola prematurata. 
+Come figliolo? Confesso come fosse antani con scappellamento a destra 
+costantinato ammaliti.}
+
+\@@_newpara:n {Ah, pardon. Tarapio tapioco come se fosse Antani, la 
+supercazzola prematurata con dominus reveriscum blinda. Come, prego? Tarapio 
+sulla supercazzola con scappellamento destro o sinistra? Non si intrometta! No, 
+aspetti, mi porga l'indice; ecco lo alzi così... guardi, guardi, guardi; lo 
+vede il dito? Lo vede che stuzzica, che prematura anche. Come figliolo? 
+Confesso come fosse antani con scappellamento a destra costantinato ammaliti. 
+Quante volte figliolo? Fifty fifty, prematinea come fosse mea culpa. Alla 
+supercazzola. Come se fosse antani anche per lei soltanto in due, oppure in 
+quattro anche scribai con cofandina; come antifurto, per esempio.}
+
+\@@_newpara:n {Ma allora io le potrei dire anche con il rispetto per 
+l'autorità, che anche soltanto le due cose come vice-sindaco, capisce? Mo 
+basta insomma! Qui c’è gente che soffre per davvero, lo capite? Chiamo il 
+medico di turno e domani ve la vedrete con il professore! Mi scusi, Antani come 
+se fosse di scappellamento tarapio tapioco scappellamento di forestieri? Va 
+be', siete forestieri, ma i cartelli sono internazionali. Mi può mostrare la 
+sua patente, per favore? E lei... cosa si sente? Professore, non le dico. 
+Antani come trazione per due anche se fosse supercazzola bitumata, ha lo 
+scappellamento a destra.}
+
+\@@_newpara:n {Guardi, le ho ritagliato quell'articolo sul Casentino. Ma lei se 
+la blinda la supercazzola prematurata come se fosse anche un po' di Casentino 
+che perdura anche come cappotto; vede, m'importa. Che non si ripeta più, vada 
+pure! Senz'altro!!! Tarapia tapioco! Brematurata la supercazzola o scherziamo? 
+Prego? No, mi permetta. No, io, scusi noi siamo in quattro. Ho provato con la 
+supercazzola con scappellamento paraplegico a sinistra, ma non funzionava, 
+faceva tu-tu. In che senso? Nel senso anafestico. Eh, sì; come farà di capo 
+d'altitudine, no? Non si intrometta! No, aspetti, mi porga l'indice; ecco lo 
+alzi così... guardi, guardi, guardi; lo vede il dito? Lo vede che stuzzica, 
+che prematura anche.}
+
+\@@_newpara:n {Ho capito. Tre applicazioni di afasol, di un’ora l’una. 
+Subito! Che c’è? Ehm... blinda la supercazzola con scappellamento a sinistra 
+e a destra come se fossero dei pentoloni. Come figliolo? Confesso come fosse 
+antani con scappellamento a destra costantinato ammaliti. Quante volte 
+figliolo? Fifty fifty, prematinea come fosse mea culpa. Alla supercazzola. Mi 
+scusi, Antani come se fosse di scappellamento tarapio tapioco scappellamento di 
+forestieri? Va be', siete forestieri, ma i cartelli sono internazionali. Mi 
+può mostrare la sua patente, per favore? Segua col dito. Vede, se va giù non 
+va su. Se va su non va giù. Si faccia aiutare dalla suora. È quello che stavo 
+dicendo, no!?}
+
+\@@_newpara:n {Vicesindaco? Basta 'osì, mi seguano al commissariato! No, no, 
+no, attenzione, noo! Mo basta insomma! Qui c’è gente che soffre per davvero, 
+lo capite? Chiamo il medico di turno e domani ve la vedrete con il professore! 
+Pattene soppaltate secondo l'articolo 12 abbia pazienza, sennò, posterdati, 
+per due, anche un pochino antani in prefettura... senza contare che la 
+supercazzola prematurata ha perso i contatti col tarapio tapioco. Guardi, le ho 
+ritagliato quell'articolo sul Casentino. Ma lei se la blinda la supercazzola 
+prematurata come se fosse anche un po' di Casentino che perdura anche come 
+cappotto; vede, m'importa.}
+
+\@@_newpara:n {Ma allora io le potrei dire anche con il rispetto per 
+l'autorità, che anche soltanto le due cose come vice-sindaco, capisce? Mo 
+basta insomma! Qui c’è gente che soffre per davvero, lo capite? Chiamo il 
+medico di turno e domani ve la vedrete con il professore! Guardi, le ho 
+ritagliato quell'articolo sul Casentino. Ma lei se la blinda la supercazzola 
+prematurata come se fosse anche un po' di Casentino che perdura anche come 
+cappotto; vede, m'importa. Che non si ripeta più, vada pure! Senz'altro!!! 
+Tarapia tapioco! Brematurata la supercazzola o scherziamo? Prego? No, mi 
+permetta. No, io, scusi noi siamo in quattro.}
+
+\@@_newpara:n {Dimmi figliolo. Sbiliguda veniale con la supercazzola 
+prematurata. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Pattene soppaltate secondo l'articolo 12 abbia 
+pazienza, sennò, posterdati, per due, anche un pochino antani in prefettura... 
+senza contare che la supercazzola prematurata ha perso i contatti col tarapio 
+tapioco. E lei... cosa si sente? Professore, non le dico. Antani come trazione 
+per due anche se fosse supercazzola bitumata, ha lo scappellamento a destra. 
+Dimmi figliolo. Sbiliguda veniale con la supercazzola prematurata. Come 
+figliolo? Confesso come fosse antani con scappellamento a destra costantinato 
+ammaliti.}
+
+\@@_newpara:n {Pattene soppaltate secondo l'articolo 12 abbia pazienza, sennò, 
+posterdati, per due, anche un pochino antani in prefettura... senza contare che 
+la supercazzola prematurata ha perso i contatti col tarapio tapioco. Ah, 
+pardon. Tarapio tapioco come se fosse Antani, la supercazzola prematurata con 
+dominus reveriscum blinda. Come, prego? Tarapio sulla supercazzola con 
+scappellamento destro o sinistra? Non si intrometta! No, aspetti, mi porga 
+l'indice; ecco lo alzi così... guardi, guardi, guardi; lo vede il dito? Lo 
+vede che stuzzica, che prematura anche. Carmensita, amore mio, sono un uomo 
+d'affari, blinda la supercazzola prematurata, una cosa d'assegni, tarapia 
+tapioca, tapioca torapia, dollari, sterline, allaccia scarpa, scarpallaccia, 
+dico d'albergo, ma tu?}
+
+\@@_newpara:n {Vicesindaco? Basta 'osì, mi seguano al commissariato! No, no, 
+no, attenzione, noo! No, no... non era troppo alto. Forse non ha capito. Io 
+dicevo che se fosse il coso di telefono, o il dito, come se fosse. Andando su o 
+giù, giù o su. No, no... non era troppo alto. Forse non ha capito. Io dicevo 
+che se fosse il coso di telefono, o il dito, come se fosse. Andando su o giù, 
+giù o su. Che non si ripeta più, vada pure! Senz'altro!!! Tarapia tapioco! 
+Brematurata la supercazzola o scherziamo? Prego? No, mi permetta. No, io, scusi 
+noi siamo in quattro.}
+
+\@@_newpara:n {Carmensita, amore mio, sono un uomo d'affari, blinda la 
+supercazzola prematurata, una cosa d'assegni, tarapia tapioca, tapioca torapia, 
+dollari, sterline, allaccia scarpa, scarpallaccia, dico d'albergo, ma tu? Ho 
+provato con la supercazzola con scappellamento paraplegico a sinistra, ma non 
+funzionava, faceva tu-tu. In che senso? Nel senso anafestico. Eh, sì; come 
+farà di capo d'altitudine, no? Pattene soppaltate secondo l'articolo 12 abbia 
+pazienza, sennò, posterdati, per due, anche un pochino antani in prefettura... 
+senza contare che la supercazzola prematurata ha perso i contatti col tarapio 
+tapioco. Mi scusi, Antani come se fosse di scappellamento tarapio tapioco 
+scappellamento di forestieri? Va be', siete forestieri, ma i cartelli sono 
+internazionali. Mi può mostrare la sua patente, per favore?}
+
+\@@_newpara:n {Che non si ripeta più, vada pure! Senz'altro!!! Tarapia 
+tapioco! Brematurata la supercazzola o scherziamo? Prego? No, mi permetta. No, 
+io, scusi noi siamo in quattro. Ho provato con la supercazzola con 
+scappellamento paraplegico a sinistra, ma non funzionava, faceva tu-tu. In che 
+senso? Nel senso anafestico. Eh, sì; come farà di capo d'altitudine, no? 
+Guardi, le ho ritagliato quell'articolo sul Casentino. Ma lei se la blinda la 
+supercazzola prematurata come se fosse anche un po' di Casentino che perdura 
+anche come cappotto; vede, m'importa. Come figliolo? Confesso come fosse antani 
+con scappellamento a destra costantinato ammaliti. Quante volte figliolo? Fifty 
+fifty, prematinea come fosse mea culpa. Alla supercazzola.}
+
+\@@_newpara:n {Ma allora io le potrei dire anche con il rispetto per 
+l'autorità, che anche soltanto le due cose come vice-sindaco, capisce? Mi 
+scusi, Antani come se fosse di scappellamento tarapio tapioco scappellamento di 
+forestieri? Va be', siete forestieri, ma i cartelli sono internazionali. Mi 
+può mostrare la sua patente, per favore? Faceva Du-Du! In che senso? Nel senso 
+anafestico! Si, forse per andicappo di altitudine. No? Ah, vuol dire che il 
+telefono è troppo alto? Come figliolo? Confesso come fosse antani con 
+scappellamento a destra costantinato ammaliti. Quante volte figliolo? Fifty 
+fifty, prematinea come fosse mea culpa. Alla supercazzola.}
+
+\@@_newpara:n {Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse per 
+andicappo di altitudine. No? Ah, vuol dire che il telefono è troppo alto? Mi 
+scusi, Antani come se fosse di scappellamento tarapio tapioco scappellamento di 
+forestieri? Va be', siete forestieri, ma i cartelli sono internazionali. Mi 
+può mostrare la sua patente, per favore? Ah, pardon. Tarapio tapioco come se 
+fosse Antani, la supercazzola prematurata con dominus reveriscum blinda. Come, 
+prego? Tarapio sulla supercazzola con scappellamento destro o sinistra? Guardi, 
+le ho ritagliato quell'articolo sul Casentino. Ma lei se la blinda la 
+supercazzola prematurata come se fosse anche un po' di Casentino che perdura 
+anche come cappotto; vede, m'importa.}
+
+\@@_newpara:n {Pattene soppaltate secondo l'articolo 12 abbia pazienza, sennò, 
+posterdati, per due, anche un pochino antani in prefettura... senza contare che 
+la supercazzola prematurata ha perso i contatti col tarapio tapioco. Mo basta 
+insomma! Qui c’è gente che soffre per davvero, lo capite? Chiamo il medico 
+di turno e domani ve la vedrete con il professore! Ho capito. Tre applicazioni 
+di afasol, di un’ora l’una. Subito! Che c’è? Ehm... blinda la 
+supercazzola con scappellamento a sinistra e a destra come se fossero dei 
+pentoloni. Ma allora io le potrei dire anche con il rispetto per l'autorità, 
+che anche soltanto le due cose come vice-sindaco, capisce?}
+
+\@@_newpara:n {Si, ma la sbiriguda della sbrindellona come se fosse antani come 
+faceva? Prego? Ho provato con la supercazzola con scappelamento paraplegico a 
+sinistra, ma non funzionava. Ma che antifurto, mi faccia il piacere! Questi 
+signori qui stavano sonando loro. Non si intrometta! No, aspetti, mi porga 
+l'indice; ecco lo alzi così... guardi, guardi, guardi; lo vede il dito? Lo 
+vede che stuzzica, che prematura anche. No, no... non era troppo alto. Forse 
+non ha capito. Io dicevo che se fosse il coso di telefono, o il dito, come se 
+fosse. Andando su o giù, giù o su.}
+
+\@@_newpara:n {Ma che antifurto, mi faccia il piacere! Questi signori qui 
+stavano sonando loro. Ma allora io le potrei dire anche con il rispetto per 
+l'autorità, che anche soltanto le due cose come vice-sindaco, capisce? Ho 
+capito. Tre applicazioni di afasol, di un’ora l’una. Subito! Che c’è? 
+Ehm... blinda la supercazzola con scappellamento a sinistra e a destra come se 
+fossero dei pentoloni. Dimmi figliolo. Sbiliguda veniale con la supercazzola 
+prematurata. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti.}
+
+\@@_newpara:n {Vicesindaco? Basta 'osì, mi seguano al commissariato! No, no, 
+no, attenzione, noo! Carmensita, amore mio, sono un uomo d'affari, blinda la 
+supercazzola prematurata, una cosa d'assegni, tarapia tapioca, tapioca torapia, 
+dollari, sterline, allaccia scarpa, scarpallaccia, dico d'albergo, ma tu? Ma 
+che antifurto, mi faccia il piacere! Questi signori qui stavano sonando loro. 
+Che non si ripeta più, vada pure! Senz'altro!!! Tarapia tapioco! Brematurata 
+la supercazzola o scherziamo? Prego? No, mi permetta. No, io, scusi noi siamo 
+in quattro.}
+
+\@@_newpara:n {Dimmi figliolo. Sbiliguda veniale con la supercazzola 
+prematurata. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Vicesindaco? Basta 'osì, mi seguano al 
+commissariato! No, no, no, attenzione, noo! Guardi, le ho ritagliato 
+quell'articolo sul Casentino. Ma lei se la blinda la supercazzola prematurata 
+come se fosse anche un po' di Casentino che perdura anche come cappotto; vede, 
+m'importa. No, no... non era troppo alto. Forse non ha capito. Io dicevo che se 
+fosse il coso di telefono, o il dito, come se fosse. Andando su o giù, giù o 
+su.}
+
+\@@_newpara:n {Ho provato con la supercazzola con scappellamento paraplegico a 
+sinistra, ma non funzionava, faceva tu-tu. In che senso? Nel senso anafestico. 
+Eh, sì; come farà di capo d'altitudine, no? No, no... non era troppo alto. 
+Forse non ha capito. Io dicevo che se fosse il coso di telefono, o il dito, 
+come se fosse. Andando su o giù, giù o su. Pattene soppaltate secondo 
+l'articolo 12 abbia pazienza, sennò, posterdati, per due, anche un pochino 
+antani in prefettura... senza contare che la supercazzola prematurata ha perso 
+i contatti col tarapio tapioco. Vicesindaco? Basta 'osì, mi seguano al 
+commissariato! No, no, no, attenzione, noo!}
+
+\@@_newpara:n {E lei... cosa si sente? Professore, non le dico. Antani come 
+trazione per due anche se fosse supercazzola bitumata, ha lo scappellamento a 
+destra. Come se fosse antani anche per lei soltanto in due, oppure in quattro 
+anche scribai con cofandina; come antifurto, per esempio. Ma allora io le 
+potrei dire anche con il rispetto per l'autorità, che anche soltanto le due 
+cose come vice-sindaco, capisce? Dimmi figliolo. Sbiliguda veniale con la 
+supercazzola prematurata. Come figliolo? Confesso come fosse antani con 
+scappellamento a destra costantinato ammaliti.}
+
+\@@_newpara:n {Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse per 
+andicappo di altitudine. No? Ah, vuol dire che il telefono è troppo alto? Ho 
+capito. Tre applicazioni di afasol, di un’ora l’una. Subito! Che c’è? 
+Ehm... blinda la supercazzola con scappellamento a sinistra e a destra come se 
+fossero dei pentoloni. Mo basta insomma! Qui c’è gente che soffre per 
+davvero, lo capite? Chiamo il medico di turno e domani ve la vedrete con il 
+professore! Mo basta insomma! Qui c’è gente che soffre per davvero, lo 
+capite? Chiamo il medico di turno e domani ve la vedrete con il professore!}
+
+\@@_newpara:n {No, no... non era troppo alto. Forse non ha capito. Io dicevo 
+che se fosse il coso di telefono, o il dito, come se fosse. Andando su o giù, 
+giù o su. Pattene soppaltate secondo l'articolo 12 abbia pazienza, sennò, 
+posterdati, per due, anche un pochino antani in prefettura... senza contare che 
+la supercazzola prematurata ha perso i contatti col tarapio tapioco. E lei... 
+cosa si sente? Professore, non le dico. Antani come trazione per due anche se 
+fosse supercazzola bitumata, ha lo scappellamento a destra. E lei... cosa si 
+sente? Professore, non le dico. Antani come trazione per due anche se fosse 
+supercazzola bitumata, ha lo scappellamento a destra.}
+
+\@@_newpara:n {Che non si ripeta più, vada pure! Senz'altro!!! Tarapia 
+tapioco! Brematurata la supercazzola o scherziamo? Prego? No, mi permetta. No, 
+io, scusi noi siamo in quattro. Che non si ripeta più, vada pure! 
+Senz'altro!!! Tarapia tapioco! Brematurata la supercazzola o scherziamo? Prego? 
+No, mi permetta. No, io, scusi noi siamo in quattro. No, no... non era troppo 
+alto. Forse non ha capito. Io dicevo che se fosse il coso di telefono, o il 
+dito, come se fosse. Andando su o giù, giù o su. Ma allora io le potrei dire 
+anche con il rispetto per l'autorità, che anche soltanto le due cose come 
+vice-sindaco, capisce?}
+
+\@@_newpara:n {Vicesindaco? Basta 'osì, mi seguano al commissariato! No, no, 
+no, attenzione, noo! Mi scusi, Antani come se fosse di scappellamento tarapio 
+tapioco scappellamento di forestieri? Va be', siete forestieri, ma i cartelli 
+sono internazionali. Mi può mostrare la sua patente, per favore? Pattene 
+soppaltate secondo l'articolo 12 abbia pazienza, sennò, posterdati, per due, 
+anche un pochino antani in prefettura... senza contare che la supercazzola 
+prematurata ha perso i contatti col tarapio tapioco. Mo basta insomma! Qui 
+c’è gente che soffre per davvero, lo capite? Chiamo il medico di turno e 
+domani ve la vedrete con il professore!}
+
+\@@_newpara:n {Vicesindaco? Basta 'osì, mi seguano al commissariato! No, no, 
+no, attenzione, noo! No, no... non era troppo alto. Forse non ha capito. Io 
+dicevo che se fosse il coso di telefono, o il dito, come se fosse. Andando su o 
+giù, giù o su. Vicesindaco? Basta 'osì, mi seguano al commissariato! No, no, 
+no, attenzione, noo! Ma allora io le potrei dire anche con il rispetto per 
+l'autorità, che anche soltanto le due cose come vice-sindaco, capisce?}
+
+\@@_newpara:n {Che non si ripeta più, vada pure! Senz'altro!!! Tarapia 
+tapioco! Brematurata la supercazzola o scherziamo? Prego? No, mi permetta. No, 
+io, scusi noi siamo in quattro. Vicesindaco? Basta 'osì, mi seguano al 
+commissariato! No, no, no, attenzione, noo! Guardi, le ho ritagliato 
+quell'articolo sul Casentino. Ma lei se la blinda la supercazzola prematurata 
+come se fosse anche un po' di Casentino che perdura anche come cappotto; vede, 
+m'importa. Mi scusi, Antani come se fosse di scappellamento tarapio tapioco 
+scappellamento di forestieri? Va be', siete forestieri, ma i cartelli sono 
+internazionali. Mi può mostrare la sua patente, per favore?}
+
+\@@_newpara:n {Non si intrometta! No, aspetti, mi porga l'indice; ecco lo alzi 
+così... guardi, guardi, guardi; lo vede il dito? Lo vede che stuzzica, che 
+prematura anche. Che non si ripeta più, vada pure! Senz'altro!!! Tarapia 
+tapioco! Brematurata la supercazzola o scherziamo? Prego? No, mi permetta. No, 
+io, scusi noi siamo in quattro. Come figliolo? Confesso come fosse antani con 
+scappellamento a destra costantinato ammaliti. Quante volte figliolo? Fifty 
+fifty, prematinea come fosse mea culpa. Alla supercazzola. Che non si ripeta 
+più, vada pure! Senz'altro!!! Tarapia tapioco! Brematurata la supercazzola o 
+scherziamo? Prego? No, mi permetta. No, io, scusi noi siamo in quattro.}
+
+\@@_newpara:n {Ho provato con la supercazzola con scappellamento paraplegico a 
+sinistra, ma non funzionava, faceva tu-tu. In che senso? Nel senso anafestico. 
+Eh, sì; come farà di capo d'altitudine, no? Ma che antifurto, mi faccia il 
+piacere! Questi signori qui stavano sonando loro. Vicesindaco? Basta 'osì, mi 
+seguano al commissariato! No, no, no, attenzione, noo! Faceva Du-Du! In che 
+senso? Nel senso anafestico! Si, forse per andicappo di altitudine. No? Ah, 
+vuol dire che il telefono è troppo alto?}
+
+\@@_newpara:n {Guardi, le ho ritagliato quell'articolo sul Casentino. Ma lei se 
+la blinda la supercazzola prematurata come se fosse anche un po' di Casentino 
+che perdura anche come cappotto; vede, m'importa. Si, ma la sbiriguda della 
+sbrindellona come se fosse antani come faceva? Prego? Ho provato con la 
+supercazzola con scappelamento paraplegico a sinistra, ma non funzionava. Si, 
+ma la sbiriguda della sbrindellona come se fosse antani come faceva? Prego? Ho 
+provato con la supercazzola con scappelamento paraplegico a sinistra, ma non 
+funzionava. Ho capito. Tre applicazioni di afasol, di un’ora l’una. Subito! 
+Che c’è? Ehm... blinda la supercazzola con scappellamento a sinistra e a 
+destra come se fossero dei pentoloni.}
+
+\@@_newpara:n {Carmensita, amore mio, sono un uomo d'affari, blinda la 
+supercazzola prematurata, una cosa d'assegni, tarapia tapioca, tapioca torapia, 
+dollari, sterline, allaccia scarpa, scarpallaccia, dico d'albergo, ma tu? Come 
+figliolo? Confesso come fosse antani con scappellamento a destra costantinato 
+ammaliti. Quante volte figliolo? Fifty fifty, prematinea come fosse mea culpa. 
+Alla supercazzola. Mo basta insomma! Qui c’è gente che soffre per davvero, 
+lo capite? Chiamo il medico di turno e domani ve la vedrete con il professore! 
+Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse per andicappo di 
+altitudine. No? Ah, vuol dire che il telefono è troppo alto?}
+
+\@@_newpara:n {Mo basta insomma! Qui c’è gente che soffre per davvero, lo 
+capite? Chiamo il medico di turno e domani ve la vedrete con il professore! Non 
+si intrometta! No, aspetti, mi porga l'indice; ecco lo alzi così... guardi, 
+guardi, guardi; lo vede il dito? Lo vede che stuzzica, che prematura anche. 
+Dimmi figliolo. Sbiliguda veniale con la supercazzola prematurata. Come 
+figliolo? Confesso come fosse antani con scappellamento a destra costantinato 
+ammaliti. Carmensita, amore mio, sono un uomo d'affari, blinda la supercazzola 
+prematurata, una cosa d'assegni, tarapia tapioca, tapioca torapia, dollari, 
+sterline, allaccia scarpa, scarpallaccia, dico d'albergo, ma tu?}
+
+\@@_newpara:n {Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Quante volte figliolo? Fifty fifty, prematinea 
+come fosse mea culpa. Alla supercazzola. Ma allora io le potrei dire anche con 
+il rispetto per l'autorità, che anche soltanto le due cose come vice-sindaco, 
+capisce? Come se fosse antani anche per lei soltanto in due, oppure in quattro 
+anche scribai con cofandina; come antifurto, per esempio. Si, ma la sbiriguda 
+della sbrindellona come se fosse antani come faceva? Prego? Ho provato con la 
+supercazzola con scappelamento paraplegico a sinistra, ma non funzionava.}
+
+\@@_newpara:n {Carmensita, amore mio, sono un uomo d'affari, blinda la 
+supercazzola prematurata, una cosa d'assegni, tarapia tapioca, tapioca torapia, 
+dollari, sterline, allaccia scarpa, scarpallaccia, dico d'albergo, ma tu? Che 
+non si ripeta più, vada pure! Senz'altro!!! Tarapia tapioco! Brematurata la 
+supercazzola o scherziamo? Prego? No, mi permetta. No, io, scusi noi siamo in 
+quattro. E lei... cosa si sente? Professore, non le dico. Antani come trazione 
+per due anche se fosse supercazzola bitumata, ha lo scappellamento a destra. 
+Segua col dito. Vede, se va giù non va su. Se va su non va giù. Si faccia 
+aiutare dalla suora. È quello che stavo dicendo, no!?}
+
+\@@_newpara:n {No, no... non era troppo alto. Forse non ha capito. Io dicevo 
+che se fosse il coso di telefono, o il dito, come se fosse. Andando su o giù, 
+giù o su. E lei... cosa si sente? Professore, non le dico. Antani come 
+trazione per due anche se fosse supercazzola bitumata, ha lo scappellamento a 
+destra. Come figliolo? Confesso come fosse antani con scappellamento a destra 
+costantinato ammaliti. Quante volte figliolo? Fifty fifty, prematinea come 
+fosse mea culpa. Alla supercazzola. Segua col dito. Vede, se va giù non va su. 
+Se va su non va giù. Si faccia aiutare dalla suora. È quello che stavo 
+dicendo, no!?}
+
+\@@_newpara:n {Carmensita, amore mio, sono un uomo d'affari, blinda la 
+supercazzola prematurata, una cosa d'assegni, tarapia tapioca, tapioca torapia, 
+dollari, sterline, allaccia scarpa, scarpallaccia, dico d'albergo, ma tu? 
+Guardi, le ho ritagliato quell'articolo sul Casentino. Ma lei se la blinda la 
+supercazzola prematurata come se fosse anche un po' di Casentino che perdura 
+anche come cappotto; vede, m'importa. Segua col dito. Vede, se va giù non va 
+su. Se va su non va giù. Si faccia aiutare dalla suora. È quello che stavo 
+dicendo, no!? Pattene soppaltate secondo l'articolo 12 abbia pazienza, sennò, 
+posterdati, per due, anche un pochino antani in prefettura... senza contare che 
+la supercazzola prematurata ha perso i contatti col tarapio tapioco.}
+
+\@@_newpara:n {Dimmi figliolo. Sbiliguda veniale con la supercazzola 
+prematurata. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Che non si ripeta più, vada pure! Senz'altro!!! 
+Tarapia tapioco! Brematurata la supercazzola o scherziamo? Prego? No, mi 
+permetta. No, io, scusi noi siamo in quattro. Dimmi figliolo. Sbiliguda veniale 
+con la supercazzola prematurata. Come figliolo? Confesso come fosse antani con 
+scappellamento a destra costantinato ammaliti. Si, ma la sbiriguda della 
+sbrindellona come se fosse antani come faceva? Prego? Ho provato con la 
+supercazzola con scappelamento paraplegico a sinistra, ma non funzionava.}
+
+\@@_newpara:n {Dimmi figliolo. Sbiliguda veniale con la supercazzola 
+prematurata. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Segua col dito. Vede, se va giù non va su. Se va 
+su non va giù. Si faccia aiutare dalla suora. È quello che stavo dicendo, 
+no!? Vicesindaco? Basta 'osì, mi seguano al commissariato! No, no, no, 
+attenzione, noo! Mo basta insomma! Qui c’è gente che soffre per davvero, lo 
+capite? Chiamo il medico di turno e domani ve la vedrete con il professore!}
+
+\@@_newpara:n {Ho capito. Tre applicazioni di afasol, di un’ora l’una. 
+Subito! Che c’è? Ehm... blinda la supercazzola con scappellamento a sinistra 
+e a destra come se fossero dei pentoloni. Ma allora io le potrei dire anche con 
+il rispetto per l'autorità, che anche soltanto le due cose come vice-sindaco, 
+capisce? Come se fosse antani anche per lei soltanto in due, oppure in quattro 
+anche scribai con cofandina; come antifurto, per esempio. Ma che antifurto, mi 
+faccia il piacere! Questi signori qui stavano sonando loro.}
+
+\@@_newpara:n {Vicesindaco? Basta 'osì, mi seguano al commissariato! No, no, 
+no, attenzione, noo! Come figliolo? Confesso come fosse antani con 
+scappellamento a destra costantinato ammaliti. Quante volte figliolo? Fifty 
+fifty, prematinea come fosse mea culpa. Alla supercazzola. Mi scusi, Antani 
+come se fosse di scappellamento tarapio tapioco scappellamento di forestieri? 
+Va be', siete forestieri, ma i cartelli sono internazionali. Mi può mostrare 
+la sua patente, per favore? Non si intrometta! No, aspetti, mi porga l'indice; 
+ecco lo alzi così... guardi, guardi, guardi; lo vede il dito? Lo vede che 
+stuzzica, che prematura anche.}
+
+\@@_newpara:n {Mo basta insomma! Qui c’è gente che soffre per davvero, lo 
+capite? Chiamo il medico di turno e domani ve la vedrete con il professore! Ho 
+provato con la supercazzola con scappellamento paraplegico a sinistra, ma non 
+funzionava, faceva tu-tu. In che senso? Nel senso anafestico. Eh, sì; come 
+farà di capo d'altitudine, no? Si, ma la sbiriguda della sbrindellona come se 
+fosse antani come faceva? Prego? Ho provato con la supercazzola con 
+scappelamento paraplegico a sinistra, ma non funzionava. Ah, pardon. Tarapio 
+tapioco come se fosse Antani, la supercazzola prematurata con dominus 
+reveriscum blinda. Come, prego? Tarapio sulla supercazzola con scappellamento 
+destro o sinistra?}
+
+\@@_newpara:n {Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse per 
+andicappo di altitudine. No? Ah, vuol dire che il telefono è troppo alto? 
+Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse per andicappo di 
+altitudine. No? Ah, vuol dire che il telefono è troppo alto? Ma allora io le 
+potrei dire anche con il rispetto per l'autorità, che anche soltanto le due 
+cose come vice-sindaco, capisce? Come se fosse antani anche per lei soltanto in 
+due, oppure in quattro anche scribai con cofandina; come antifurto, per 
+esempio.}
+
+\@@_newpara:n {Segua col dito. Vede, se va giù non va su. Se va su non va 
+giù. Si faccia aiutare dalla suora. È quello che stavo dicendo, no!? Che non 
+si ripeta più, vada pure! Senz'altro!!! Tarapia tapioco! Brematurata la 
+supercazzola o scherziamo? Prego? No, mi permetta. No, io, scusi noi siamo in 
+quattro. No, no... non era troppo alto. Forse non ha capito. Io dicevo che se 
+fosse il coso di telefono, o il dito, come se fosse. Andando su o giù, giù o 
+su. Mi scusi, Antani come se fosse di scappellamento tarapio tapioco 
+scappellamento di forestieri? Va be', siete forestieri, ma i cartelli sono 
+internazionali. Mi può mostrare la sua patente, per favore?}
+
+\@@_newpara:n {Ma allora io le potrei dire anche con il rispetto per 
+l'autorità, che anche soltanto le due cose come vice-sindaco, capisce? Ah, 
+pardon. Tarapio tapioco come se fosse Antani, la supercazzola prematurata con 
+dominus reveriscum blinda. Come, prego? Tarapio sulla supercazzola con 
+scappellamento destro o sinistra? Si, ma la sbiriguda della sbrindellona come 
+se fosse antani come faceva? Prego? Ho provato con la supercazzola con 
+scappelamento paraplegico a sinistra, ma non funzionava. Carmensita, amore mio, 
+sono un uomo d'affari, blinda la supercazzola prematurata, una cosa d'assegni, 
+tarapia tapioca, tapioca torapia, dollari, sterline, allaccia scarpa, 
+scarpallaccia, dico d'albergo, ma tu?}
+
+\@@_newpara:n {E lei... cosa si sente? Professore, non le dico. Antani come 
+trazione per due anche se fosse supercazzola bitumata, ha lo scappellamento a 
+destra. Che non si ripeta più, vada pure! Senz'altro!!! Tarapia tapioco! 
+Brematurata la supercazzola o scherziamo? Prego? No, mi permetta. No, io, scusi 
+noi siamo in quattro. Si, ma la sbiriguda della sbrindellona come se fosse 
+antani come faceva? Prego? Ho provato con la supercazzola con scappelamento 
+paraplegico a sinistra, ma non funzionava. No, no... non era troppo alto. Forse 
+non ha capito. Io dicevo che se fosse il coso di telefono, o il dito, come se 
+fosse. Andando su o giù, giù o su.}
+
+\@@_newpara:n {Ah, pardon. Tarapio tapioco come se fosse Antani, la 
+supercazzola prematurata con dominus reveriscum blinda. Come, prego? Tarapio 
+sulla supercazzola con scappellamento destro o sinistra? Ah, pardon. Tarapio 
+tapioco come se fosse Antani, la supercazzola prematurata con dominus 
+reveriscum blinda. Come, prego? Tarapio sulla supercazzola con scappellamento 
+destro o sinistra? Ma allora io le potrei dire anche con il rispetto per 
+l'autorità, che anche soltanto le due cose come vice-sindaco, capisce? No, 
+no... non era troppo alto. Forse non ha capito. Io dicevo che se fosse il coso 
+di telefono, o il dito, come se fosse. Andando su o giù, giù o su.}
+
+\@@_newpara:n {Vicesindaco? Basta 'osì, mi seguano al commissariato! No, no, 
+no, attenzione, noo! No, no... non era troppo alto. Forse non ha capito. Io 
+dicevo che se fosse il coso di telefono, o il dito, come se fosse. Andando su o 
+giù, giù o su. Si, ma la sbiriguda della sbrindellona come se fosse antani 
+come faceva? Prego? Ho provato con la supercazzola con scappelamento 
+paraplegico a sinistra, ma non funzionava. No, no... non era troppo alto. Forse 
+non ha capito. Io dicevo che se fosse il coso di telefono, o il dito, come se 
+fosse. Andando su o giù, giù o su.}
+
+\@@_newpara:n {Carmensita, amore mio, sono un uomo d'affari, blinda la 
+supercazzola prematurata, una cosa d'assegni, tarapia tapioca, tapioca torapia, 
+dollari, sterline, allaccia scarpa, scarpallaccia, dico d'albergo, ma tu? Si, 
+ma la sbiriguda della sbrindellona come se fosse antani come faceva? Prego? Ho 
+provato con la supercazzola con scappelamento paraplegico a sinistra, ma non 
+funzionava. Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse per 
+andicappo di altitudine. No? Ah, vuol dire che il telefono è troppo alto? Si, 
+ma la sbiriguda della sbrindellona come se fosse antani come faceva? Prego? Ho 
+provato con la supercazzola con scappelamento paraplegico a sinistra, ma non 
+funzionava.}
+
+\@@_newpara:n {Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse per 
+andicappo di altitudine. No? Ah, vuol dire che il telefono è troppo alto? Mo 
+basta insomma! Qui c’è gente che soffre per davvero, lo capite? Chiamo il 
+medico di turno e domani ve la vedrete con il professore! Ma allora io le 
+potrei dire anche con il rispetto per l'autorità, che anche soltanto le due 
+cose come vice-sindaco, capisce? Ho provato con la supercazzola con 
+scappellamento paraplegico a sinistra, ma non funzionava, faceva tu-tu. In che 
+senso? Nel senso anafestico. Eh, sì; come farà di capo d'altitudine, no?}
+
+\@@_newpara:n {Che non si ripeta più, vada pure! Senz'altro!!! Tarapia 
+tapioco! Brematurata la supercazzola o scherziamo? Prego? No, mi permetta. No, 
+io, scusi noi siamo in quattro. Ah, pardon. Tarapio tapioco come se fosse 
+Antani, la supercazzola prematurata con dominus reveriscum blinda. Come, prego? 
+Tarapio sulla supercazzola con scappellamento destro o sinistra? Come se fosse 
+antani anche per lei soltanto in due, oppure in quattro anche scribai con 
+cofandina; come antifurto, per esempio. Segua col dito. Vede, se va giù non va 
+su. Se va su non va giù. Si faccia aiutare dalla suora. È quello che stavo 
+dicendo, no!?}
+
+\@@_newpara:n {Sorella? Eh!? Col tarapia tapioco come se fosse la supercazzola 
+per lei. Voglio il cappellano, il cappellano! Ho visto la Madonna! Ho capito. 
+Tre applicazioni di afasol, di un’ora l’una. Subito! Che c’è? Ehm... 
+blinda la supercazzola con scappellamento a sinistra e a destra come se fossero 
+dei pentoloni. Pattene soppaltate secondo l'articolo 12 abbia pazienza, sennò, 
+posterdati, per due, anche un pochino antani in prefettura... senza contare che 
+la supercazzola prematurata ha perso i contatti col tarapio tapioco. Mo basta 
+insomma! Qui c’è gente che soffre per davvero, lo capite? Chiamo il medico 
+di turno e domani ve la vedrete con il professore!}
+
+\@@_newpara:n {Ho provato con la supercazzola con scappellamento paraplegico a 
+sinistra, ma non funzionava, faceva tu-tu. In che senso? Nel senso anafestico. 
+Eh, sì; come farà di capo d'altitudine, no? Come se fosse antani anche per 
+lei soltanto in due, oppure in quattro anche scribai con cofandina; come 
+antifurto, per esempio. Ho capito. Tre applicazioni di afasol, di un’ora 
+l’una. Subito! Che c’è? Ehm... blinda la supercazzola con scappellamento a 
+sinistra e a destra come se fossero dei pentoloni. Come figliolo? Confesso come 
+fosse antani con scappellamento a destra costantinato ammaliti. Quante volte 
+figliolo? Fifty fifty, prematinea come fosse mea culpa. Alla supercazzola.}
+
+\@@_newpara:n {Carmensita, amore mio, sono un uomo d'affari, blinda la 
+supercazzola prematurata, una cosa d'assegni, tarapia tapioca, tapioca torapia, 
+dollari, sterline, allaccia scarpa, scarpallaccia, dico d'albergo, ma tu? Ho 
+capito. Tre applicazioni di afasol, di un’ora l’una. Subito! Che c’è? 
+Ehm... blinda la supercazzola con scappellamento a sinistra e a destra come se 
+fossero dei pentoloni. Dimmi figliolo. Sbiliguda veniale con la supercazzola 
+prematurata. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Come figliolo? Confesso come fosse antani con 
+scappellamento a destra costantinato ammaliti. Quante volte figliolo? Fifty 
+fifty, prematinea come fosse mea culpa. Alla supercazzola.}
+
+\@@_newpara:n {Sorella? Eh!? Col tarapia tapioco come se fosse la supercazzola 
+per lei. Voglio il cappellano, il cappellano! Ho visto la Madonna! Mi scusi, 
+Antani come se fosse di scappellamento tarapio tapioco scappellamento di 
+forestieri? Va be', siete forestieri, ma i cartelli sono internazionali. Mi 
+può mostrare la sua patente, per favore? Ho provato con la supercazzola con 
+scappellamento paraplegico a sinistra, ma non funzionava, faceva tu-tu. In che 
+senso? Nel senso anafestico. Eh, sì; come farà di capo d'altitudine, no? Non 
+si intrometta! No, aspetti, mi porga l'indice; ecco lo alzi così... guardi, 
+guardi, guardi; lo vede il dito? Lo vede che stuzzica, che prematura anche.}
+
+\@@_newpara:n {Come se fosse antani anche per lei soltanto in due, oppure in 
+quattro anche scribai con cofandina; come antifurto, per esempio. Come 
+figliolo? Confesso come fosse antani con scappellamento a destra costantinato 
+ammaliti. Quante volte figliolo? Fifty fifty, prematinea come fosse mea culpa. 
+Alla supercazzola. Come figliolo? Confesso come fosse antani con scappellamento 
+a destra costantinato ammaliti. Quante volte figliolo? Fifty fifty, prematinea 
+come fosse mea culpa. Alla supercazzola. Dimmi figliolo. Sbiliguda veniale con 
+la supercazzola prematurata. Come figliolo? Confesso come fosse antani con 
+scappellamento a destra costantinato ammaliti.}
+
+\@@_newpara:n {Ah, pardon. Tarapio tapioco come se fosse Antani, la 
+supercazzola prematurata con dominus reveriscum blinda. Come, prego? Tarapio 
+sulla supercazzola con scappellamento destro o sinistra? Dimmi figliolo. 
+Sbiliguda veniale con la supercazzola prematurata. Come figliolo? Confesso come 
+fosse antani con scappellamento a destra costantinato ammaliti. Ho provato con 
+la supercazzola con scappellamento paraplegico a sinistra, ma non funzionava, 
+faceva tu-tu. In che senso? Nel senso anafestico. Eh, sì; come farà di capo 
+d'altitudine, no? Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse 
+per andicappo di altitudine. No? Ah, vuol dire che il telefono è troppo alto?}
+
+\@@_newpara:n {Vicesindaco? Basta 'osì, mi seguano al commissariato! No, no, 
+no, attenzione, noo! Che non si ripeta più, vada pure! Senz'altro!!! Tarapia 
+tapioco! Brematurata la supercazzola o scherziamo? Prego? No, mi permetta. No, 
+io, scusi noi siamo in quattro. No, no... non era troppo alto. Forse non ha 
+capito. Io dicevo che se fosse il coso di telefono, o il dito, come se fosse. 
+Andando su o giù, giù o su. E lei... cosa si sente? Professore, non le dico. 
+Antani come trazione per due anche se fosse supercazzola bitumata, ha lo 
+scappellamento a destra.}
+
+\@@_newpara:n {Faceva Du-Du! In che senso? Nel senso anafestico! Si, forse per 
+andicappo di altitudine. No? Ah, vuol dire che il telefono è troppo alto? 
+Vicesindaco? Basta 'osì, mi seguano al commissariato! No, no, no, attenzione, 
+noo! Come se fosse antani anche per lei soltanto in due, oppure in quattro 
+anche scribai con cofandina; come antifurto, per esempio. Ah, pardon. Tarapio 
+tapioco come se fosse Antani, la supercazzola prematurata con dominus 
+reveriscum blinda. Come, prego? Tarapio sulla supercazzola con scappellamento 
+destro o sinistra?}
+
+\@@_newpara:n {Che non si ripeta più, vada pure! Senz'altro!!! Tarapia 
+tapioco! Brematurata la supercazzola o scherziamo? Prego? No, mi permetta. No, 
+io, scusi noi siamo in quattro. Si, ma la sbiriguda della sbrindellona come se 
+fosse antani come faceva? Prego? Ho provato con la supercazzola con 
+scappelamento paraplegico a sinistra, ma non funzionava. Ho provato con la 
+supercazzola con scappellamento paraplegico a sinistra, ma non funzionava, 
+faceva tu-tu. In che senso? Nel senso anafestico. Eh, sì; come farà di capo 
+d'altitudine, no? Ah, pardon. Tarapio tapioco come se fosse Antani, la 
+supercazzola prematurata con dominus reveriscum blinda. Come, prego? Tarapio 
+sulla supercazzola con scappellamento destro o sinistra?}
+
+\@@_newpara:n {Ho provato con la supercazzola con scappellamento paraplegico a 
+sinistra, ma non funzionava, faceva tu-tu. In che senso? Nel senso anafestico. 
+Eh, sì; come farà di capo d'altitudine, no? Pattene soppaltate secondo 
+l'articolo 12 abbia pazienza, sennò, posterdati, per due, anche un pochino 
+antani in prefettura... senza contare che la supercazzola prematurata ha perso 
+i contatti col tarapio tapioco. Mi scusi, Antani come se fosse di 
+scappellamento tarapio tapioco scappellamento di forestieri? Va be', siete 
+forestieri, ma i cartelli sono internazionali. Mi può mostrare la sua patente, 
+per favore? Ma che antifurto, mi faccia il piacere! Questi signori qui stavano 
+sonando loro.}
+
+\@@_newpara:n {E lei... cosa si sente? Professore, non le dico. Antani come 
+trazione per due anche se fosse supercazzola bitumata, ha lo scappellamento a 
+destra. Ma che antifurto, mi faccia il piacere! Questi signori qui stavano 
+sonando loro. Sorella? Eh!? Col tarapia tapioco come se fosse la supercazzola 
+per lei. Voglio il cappellano, il cappellano! Ho visto la Madonna! Carmensita, 
+amore mio, sono un uomo d'affari, blinda la supercazzola prematurata, una cosa 
+d'assegni, tarapia tapioca, tapioca torapia, dollari, sterline, allaccia 
+scarpa, scarpallaccia, dico d'albergo, ma tu?}
+
+\@@_newpara:n {Ho provato con la supercazzola con scappellamento paraplegico a 
+sinistra, ma non funzionava, faceva tu-tu. In che senso? Nel senso anafestico. 
+Eh, sì; come farà di capo d'altitudine, no? Carmensita, amore mio, sono un 
+uomo d'affari, blinda la supercazzola prematurata, una cosa d'assegni, tarapia 
+tapioca, tapioca torapia, dollari, sterline, allaccia scarpa, scarpallaccia, 
+dico d'albergo, ma tu? Non si intrometta! No, aspetti, mi porga l'indice; ecco 
+lo alzi così... guardi, guardi, guardi; lo vede il dito? Lo vede che stuzzica, 
+che prematura anche. Faceva Du-Du! In che senso? Nel senso anafestico! Si, 
+forse per andicappo di altitudine. No? Ah, vuol dire che il telefono è troppo 
+alto?}
+
+\@@_newpara:n {Non si intrometta! No, aspetti, mi porga l'indice; ecco lo alzi 
+così... guardi, guardi, guardi; lo vede il dito? Lo vede che stuzzica, che 
+prematura anche. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Quante volte figliolo? Fifty fifty, prematinea 
+come fosse mea culpa. Alla supercazzola. Ah, pardon. Tarapio tapioco come se 
+fosse Antani, la supercazzola prematurata con dominus reveriscum blinda. Come, 
+prego? Tarapio sulla supercazzola con scappellamento destro o sinistra? Mo 
+basta insomma! Qui c’è gente che soffre per davvero, lo capite? Chiamo il 
+medico di turno e domani ve la vedrete con il professore!}
+
+\@@_newpara:n {Segua col dito. Vede, se va giù non va su. Se va su non va 
+giù. Si faccia aiutare dalla suora. È quello che stavo dicendo, no!? Faceva 
+Du-Du! In che senso? Nel senso anafestico! Si, forse per andicappo di 
+altitudine. No? Ah, vuol dire che il telefono è troppo alto? Non si 
+intrometta! No, aspetti, mi porga l'indice; ecco lo alzi così... guardi, 
+guardi, guardi; lo vede il dito? Lo vede che stuzzica, che prematura anche. Ma 
+allora io le potrei dire anche con il rispetto per l'autorità, che anche 
+soltanto le due cose come vice-sindaco, capisce?}
+
+\@@_newpara:n {Mi scusi, Antani come se fosse di scappellamento tarapio tapioco 
+scappellamento di forestieri? Va be', siete forestieri, ma i cartelli sono 
+internazionali. Mi può mostrare la sua patente, per favore? Pattene soppaltate 
+secondo l'articolo 12 abbia pazienza, sennò, posterdati, per due, anche un 
+pochino antani in prefettura... senza contare che la supercazzola prematurata 
+ha perso i contatti col tarapio tapioco. Si, ma la sbiriguda della sbrindellona 
+come se fosse antani come faceva? Prego? Ho provato con la supercazzola con 
+scappelamento paraplegico a sinistra, ma non funzionava. Ma allora io le potrei 
+dire anche con il rispetto per l'autorità, che anche soltanto le due cose come 
+vice-sindaco, capisce?}
+
+\@@_newpara:n {Ma allora io le potrei dire anche con il rispetto per 
+l'autorità, che anche soltanto le due cose come vice-sindaco, capisce? Ah, 
+pardon. Tarapio tapioco come se fosse Antani, la supercazzola prematurata con 
+dominus reveriscum blinda. Come, prego? Tarapio sulla supercazzola con 
+scappellamento destro o sinistra? Segua col dito. Vede, se va giù non va su. 
+Se va su non va giù. Si faccia aiutare dalla suora. È quello che stavo 
+dicendo, no!? Ma allora io le potrei dire anche con il rispetto per 
+l'autorità, che anche soltanto le due cose come vice-sindaco, capisce?}
+
+\@@_newpara:n {Guardi, le ho ritagliato quell'articolo sul Casentino. Ma lei se 
+la blinda la supercazzola prematurata come se fosse anche un po' di Casentino 
+che perdura anche come cappotto; vede, m'importa. Mi scusi, Antani come se 
+fosse di scappellamento tarapio tapioco scappellamento di forestieri? Va be', 
+siete forestieri, ma i cartelli sono internazionali. Mi può mostrare la sua 
+patente, per favore? Come se fosse antani anche per lei soltanto in due, oppure 
+in quattro anche scribai con cofandina; come antifurto, per esempio. Ho provato 
+con la supercazzola con scappellamento paraplegico a sinistra, ma non 
+funzionava, faceva tu-tu. In che senso? Nel senso anafestico. Eh, sì; come 
+farà di capo d'altitudine, no?}
+
+\@@_newpara:n {Ho provato con la supercazzola con scappellamento paraplegico a 
+sinistra, ma non funzionava, faceva tu-tu. In che senso? Nel senso anafestico. 
+Eh, sì; come farà di capo d'altitudine, no? Faceva Du-Du! In che senso? Nel 
+senso anafestico! Si, forse per andicappo di altitudine. No? Ah, vuol dire che 
+il telefono è troppo alto? Come figliolo? Confesso come fosse antani con 
+scappellamento a destra costantinato ammaliti. Quante volte figliolo? Fifty 
+fifty, prematinea come fosse mea culpa. Alla supercazzola. Pattene soppaltate 
+secondo l'articolo 12 abbia pazienza, sennò, posterdati, per due, anche un 
+pochino antani in prefettura... senza contare che la supercazzola prematurata 
+ha perso i contatti col tarapio tapioco.}
+
+\@@_newpara:n {Mi scusi, Antani come se fosse di scappellamento tarapio tapioco 
+scappellamento di forestieri? Va be', siete forestieri, ma i cartelli sono 
+internazionali. Mi può mostrare la sua patente, per favore? Faceva Du-Du! In 
+che senso? Nel senso anafestico! Si, forse per andicappo di altitudine. No? Ah, 
+vuol dire che il telefono è troppo alto? Carmensita, amore mio, sono un uomo 
+d'affari, blinda la supercazzola prematurata, una cosa d'assegni, tarapia 
+tapioca, tapioca torapia, dollari, sterline, allaccia scarpa, scarpallaccia, 
+dico d'albergo, ma tu? Mo basta insomma! Qui c’è gente che soffre per 
+davvero, lo capite? Chiamo il medico di turno e domani ve la vedrete con il 
+professore!}
+
+\@@_newpara:n {Dimmi figliolo. Sbiliguda veniale con la supercazzola 
+prematurata. Come figliolo? Confesso come fosse antani con scappellamento a 
+destra costantinato ammaliti. Come figliolo? Confesso come fosse antani con 
+scappellamento a destra costantinato ammaliti. Quante volte figliolo? Fifty 
+fifty, prematinea come fosse mea culpa. Alla supercazzola. Come figliolo? 
+Confesso come fosse antani con scappellamento a destra costantinato ammaliti. 
+Quante volte figliolo? Fifty fifty, prematinea come fosse mea culpa. Alla 
+supercazzola. Ho capito. Tre applicazioni di afasol, di un’ora l’una. 
+Subito! Che c’è? Ehm... blinda la supercazzola con scappellamento a sinistra 
+e a destra come se fossero dei pentoloni.}
+
+\@@_newpara:n {Mo basta insomma! Qui c’è gente che soffre per davvero, lo 
+capite? Chiamo il medico di turno e domani ve la vedrete con il professore! 
+Guardi, le ho ritagliato quell'articolo sul Casentino. Ma lei se la blinda la 
+supercazzola prematurata come se fosse anche un po' di Casentino che perdura 
+anche come cappotto; vede, m'importa. Guardi, le ho ritagliato quell'articolo 
+sul Casentino. Ma lei se la blinda la supercazzola prematurata come se fosse 
+anche un po' di Casentino che perdura anche come cappotto; vede, m'importa. Ah, 
+pardon. Tarapio tapioco come se fosse Antani, la supercazzola prematurata con 
+dominus reveriscum blinda. Come, prego? Tarapio sulla supercazzola con 
+scappellamento destro o sinistra?}
+
+%    \end{macrocode}
+%
+% Now we define the sequence of index words.
+%    \begin{macrocode}
+\@@_newword:n {afasol}
+\@@_newword:n {affari}
+\@@_newword:n {altitudine}
+\@@_newword:n {altro}
+\@@_newword:n {ammaliti}
+\@@_newword:n {amore}
+\@@_newword:n {anafestico}
+\@@_newword:n {andicappo}
+\@@_newword:n {Antani}
+\@@_newword:n {antani}
+\@@_newword:n {antifurto}
+\@@_newword:n {articolo}
+\@@_newword:n {aspetti}
+\@@_newword:n {attenzione}
+\@@_newword:n {bituma}
+\@@_newword:n {blinda}
+\@@_newword:n {Brematura}
+\@@_newword:n {Brematurata}
+\@@_newword:n {capito}
+\@@_newword:n {cappellano}
+\@@_newword:n {cappotto}
+\@@_newword:n {Carmensita}
+\@@_newword:n {Casentino}
+\@@_newword:n {cofandina}
+\@@_newword:n {commissariato}
+\@@_newword:n {Confesso}
+\@@_newword:n {contatti}
+\@@_newword:n {costantinato}
+\@@_newword:n {culpa}
+\@@_newword:n {destra}
+\@@_newword:n {destro}
+\@@_newword:n {dito}
+\@@_newword:n {dollari}
+\@@_newword:n {dominus}
+\@@_newword:n {Du}
+\@@_newword:n {du}
+\@@_newword:n {due}
+\@@_newword:n {ecco}
+\@@_newword:n {faccia}
+\@@_newword:n {favore}
+\@@_newword:n {fifty}
+\@@_newword:n {figliolo}
+\@@_newword:n {forestieri}
+\@@_newword:n {giù}
+\@@_newword:n {guardi}
+\@@_newword:n {indice}
+\@@_newword:n {internazionali}
+\@@_newword:n {intrometta}
+\@@_newword:n {Madonna}
+\@@_newword:n {medico}
+\@@_newword:n {Necchi}
+\@@_newword:n {paraplegico}
+\@@_newword:n {pardon}
+\@@_newword:n {Pattene}
+\@@_newword:n {pazienza}
+\@@_newword:n {pentoloni}
+\@@_newword:n {piacere}
+\@@_newword:n {pochino}
+\@@_newword:n {porga}
+\@@_newword:n {porga}
+\@@_newword:n {posterdati}
+\@@_newword:n {prefettura}
+\@@_newword:n {Prego}
+\@@_newword:n {prego}
+\@@_newword:n {prematura}
+\@@_newword:n {prematurata}
+\@@_newword:n {professore}
+\@@_newword:n {provato}
+\@@_newword:n {quattro}
+\@@_newword:n {reveriscum}
+\@@_newword:n {rispetto}
+\@@_newword:n {Sbiliguda}
+\@@_newword:n {sbiriguda}
+\@@_newword:n {sbrindellona}
+\@@_newword:n {scappellamento}
+\@@_newword:n {scarpa}
+\@@_newword:n {scherziamo}
+\@@_newword:n {scribai}
+\@@_newword:n {secondo}
+\@@_newword:n {segua}
+\@@_newword:n {sindaco}
+\@@_newword:n {sinistra}
+\@@_newword:n {sinistro}
+\@@_newword:n {Sorella}
+\@@_newword:n {sterline}
+\@@_newword:n {stuzzica}
+\@@_newword:n {Subito}
+\@@_newword:n {suora}
+\@@_newword:n {supercazzola}
+\@@_newword:n {tapioca}
+\@@_newword:n {tarapia}
+\@@_newword:n {tarapioco}
+\@@_newword:n {telefono}
+\@@_newword:n {trazione}
+\@@_newword:n {tre}
+\@@_newword:n {Vede}
+\@@_newword:n {veniale}
+\@@_newword:n {Vicesindaco}
+\@@_newword:n {vicesindaco}
+\@@_newword:n {voglio}
+%    \end{macrocode}
+%
+% Finally we close the group and issue a message in the log file
+% stating how many sentences are available.
+%    \begin{macrocode}
+\group_end:
+\msg_info:nnx {antanilipsum} {how-many}
+  { \int_eval:n {\seq_count:N \g_@@_pars_seq} }
+%    \end{macrocode}
+%
+% \iffalse
+%</package>
+% \fi
+% \end{implementation}
+%
+% \PrintIndex

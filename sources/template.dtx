@@ -1,0 +1,523 @@
+% \iffalse meta-comment
+%<*internal>
+\iffalse
+%</internal>
+%<*readme>
+The `antanilipsum` package is an italian blind text generator that ouputs _supercazzole_, mocking nonsense phrases from the movie series Amici Miei, directed by Mario Monicelli.  
+
+The package is a modified version of `kantlipsum` by Enrico Gregorio that uses paragraphs from a variety of sources, including original movies, examples from the GitHub package [esseks/monicelli](https://github.com/esseks/monicelli), and online generators like [AntanIpsum](https://antanipsum.com).  
+
+The package GitHub repo [AlphaJack/antanilipsum](https://github.com/AlphaJack/antanilipsum) is aimed to facilitate the creation of a custom blind text generator by simply replacing the paragraph files used to build this package.  
+  
+This released is based on `kantilipsum` version 0.8a.
+
+Copyright 2020 Jack Coleman
+
+It may be distributed and/or modified under the conditions of the LaTeX Project Public License (LPPL), either version 1.3c of this license or (at your option) any later version.  The latest version of this license is in the file https://www.latex-project.org/lppl.txt.
+The author is Jack Coleman and is reachable at the email address `alphajack AT tuta DOT io`.
+
+This work has the LPPL maintenance status "author-maintained".
+
+This work consists of the following files:
+
+- README.md (this file)
+- antanilipsum.dtx
+- antanilipsum.pdf
+
+and of the derived file
+
+- antanilipsum.sty
+
+To install the distribution run
+
+```
+lualatex antanilipsum.dtx
+```
+
+It is also possible to use `tex` or `pdflatex` for the task, but `lualatex` [is advised](https://github.com/matlab2tikz/matlab2tikz/wiki/TeX-capacity-exceeded,-sorry) when using a large amount of paragraphs.
+
+%</readme>
+%<*internal>
+\fi
+\def\nameofplainTeX{plain}
+\ifx\fmtname\nameofplainTeX\else
+  \expandafter\begingroup
+\fi
+%</internal>
+%<*install>
+\input l3docstrip.tex
+\keepsilent
+\askforoverwritefalse
+\preamble
+---------------------------------------------------------------
+The antanilipsum package --- Generate sentences in Conte Mascetti's style
+Maintained by Jack Coleman
+E-mail: alphajack AT tuta DOT io
+Released under the LaTeX Project Public License v1.3c or later
+See https://www.latex-project.org/lppl.txt
+---------------------------------------------------------------
+\endpreamble
+\postamble
+Copyright (C) 2020 by
+  Jack Coleman
+  alphajack AT tuta DOT io
+
+It may be distributed and/or modified under the conditions of the
+LaTeX Project Public License (LPPL), either version 1.3c of this
+license or (at your option) any later version.  The latest version
+of this license is in the file
+    https://www.latex-project.org/lppl.txt
+This work consists of the file  antanilipsum.dtx
+          and the derived files antanilipsum.pdf,
+                                antanilipsum.sty and
+                                antanilipsum.ins.
+\endpostamble
+\usedir{tex/latex/antanilipsum}
+\generate{
+  \file{\jobname.sty}{\from{\jobname.dtx}{package}}
+}
+%</install>
+%<install>\endbatchfile
+%<*internal>
+\usedir{source/latex/antanilipsum}
+\generate{
+  \file{\jobname.ins}{\from{\jobname.dtx}{install}}
+}
+\nopreamble\nopostamble
+\usedir{doc/latex/antanilipsum}
+\generate{
+  \file{README.md}{\from{\jobname.dtx}{readme}}
+}
+\ifx\fmtname\nameofplainTeX
+  \expandafter\endbatchfile
+\else
+  \expandafter\endgroup
+\fi
+%</internal>
+%<*driver|package>
+\RequirePackage{expl3}[2019/07/01]
+\RequirePackage{xparse}
+%</driver|package>
+%<*driver>
+\documentclass[a4paper,full]{l3doc}
+\usepackage{bookmark}
+\usepackage{antanilipsum}
+\usepackage[english,italian]{babel}
+\begin{document}
+  \DocInput{\jobname.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \GetFileInfo{\jobname.sty}
+%
+% \title{The \textsf{antanilipsum} package\\ Dummy text in Mascettian style}
+%
+% \author{^^A
+%  Jack Coleman\thanks
+%    {^^A
+%      The author can be reached at the following email address:
+%        \texttt{alphajack AT tuta DOT io}^^A
+%    }^^A
+% }
+%
+% \date{Released \filedate}
+%
+% \maketitle
+%
+%\changes{v0.8}{2020-05-05}{First released version}
+%
+% \begin{documentation}
+%
+% \section{Introduction}
+%
+% The \pkg{antanilipsum} package is a modified version of \pkg{kantlipsum} that
+% offers the same functionalities, but instead nonsense in Kantian style, 
+% it typesets paragraphs of \emph{supercazzole}, italian nonsense phrases 
+% composed of invented words, which are used as a joke in order to mock 
+% or confuse the person to whom the phrase is addressed. The text it uses comes
+% not only from the original \href{https://www.youtube.com/watch?v=_9MTJw5ctVE}{\emph{Amici Miei}} movie series, but also from fan
+% produced content and online generators like \href{https://antanipsum.com}{\emph{AntanIpsum}}.
+%
+%
+% \section{Example}
+% \begin{otherlanguage}{italian}
+% \antani[1-3]
+% \end{otherlanguage}
+% \section{Options}
+%
+% The package has four document options, the first two of which are
+% alternative to each other:
+% \begin{itemize}[font=\ttfamily]
+% \item[par$\,\vert\,$nopar] With the default \texttt{par} all pieces
+% of text will be ended by a \cs{par} command; specifying \texttt{par}
+% is optional; the option \texttt{nopar} will not add this \cs{par} at
+% the end of each fragment of Mascettian phrases.
+% \item[numbers] Each piece of Mascettian phrases will be preceded by its
+% number (such as in ``1~\textbullet~Lei ha clacsonato. Tarapia tapioco, 
+% prematurata alla supercazzola o scherziamo? No, mi permetta\dots''), 
+% which can be useful for better control of what is produced.
+% \item[index] Each paragraph will generate an index entry; a
+% |\makeindex| command will be needed, with a suitable package for
+% making the index, and |\printindex| for printing it. However the
+% index entry may be off by one, since the |\index| command is issued
+% at the beginning of the paragraph. Also there is no guarantee that
+% the indexed word really belongs to the paragraph.
+% \end{itemize}
+%
+% \section{Commands}
+%
+% The commands provided by the package are:
+% \begin{itemize}[font=\ttfamily]
+% \item[\cs{antani}] This command takes an optional argument which can
+% be of the form \texttt{[42]} (that is, only one integer) or
+% \texttt{[3-14]} (that is, two integers separated by a hyphen); as in
+% \pkg{lipsum}, \verb|\antani[42]|, \verb|\antani[3-14]| and \verb|\antani|
+% will produce the 42nd pseudomascettian paragraph, the paragraphs from
+% the 3rd to the 14th, and those from the 1st to the 7th,
+% respectively.
+% \item[\cs{antani*}] The same as before, see later for the difference.
+% \item[\cs{antanidef}] This command takes two arguments, a control
+% sequence and an integer; the call \verb|\antanidef{\mytext}{200}| will
+% store in \cs{mytext} the 200th paragraph of pseudomascettian text
+% provided by this package.
+% \end{itemize}
+% The commands \cs{antani}, \cs{antani*} and \cs{antanidef} take a further
+% optional argument; with \verb|\antani[42][1-3]| just the first three
+% sentences of paragraph number~42 will be printed; ranges outside the
+% actual number of sentences will be ignored. The requested sentences
+% are stored, in the case of \cs{antanidef}.
+%
+% What's the difference between \cs{antani} and \cs{antani*}? The normal
+% version will respect the given package option; that is, if
+% \texttt{par} is in force, \verb|\antani[1-2]| will produce \emph{two}
+% paragraphs, while \verb|\antani*[1-2]| will only produce a big chunk
+% of text without issuing any \verb|\par| command. The logic is
+% reversed if the \texttt{nopar} option has been given.
+%
+% By the way, 200 is the number of available pieces; if one exceeds
+% the limit, nothing will be printed. Thus \verb|\antani[200-300]| will
+% print only \emph{one} paragraph. However, printing all paragraphs
+% with the standard ten point size Computer Modern font and the
+% \pkg{article} class fills more than fifty pages, so it seems that
+% the supply of text can be sufficient.
+%
+% \subsection*{Note}
+%
+% This package aims to only modify the text used by the \pkg{kantlipsum} package
+% and in no way tries to alter how it operates. A public repository is available with
+% a bash script that allows to easily build a custom version of this package by simply 
+% replacing the text file it uses.
+%
+% The original \pkg{kantlipsum} is just an exercise for practicing with \LaTeX3
+% syntax. It uses the ``experimental'' packages made available by the
+% \LaTeX3 team. Many thanks to Joseph Wright, Bruno Le Floch and Frank
+% Mittelbach for suggesting improvements.
+%
+% \subsection*{Changes from \pkg{kantlipsum} 0.8a}
+%
+% Modified the documentation according to the new package.
+%
+% Paragraphs and index words have been removed from \emph{kantlipsum.dtx} 
+% and are now added every time the build script is run.
+%
+% \end{documentation}
+%
+% \begin{implementation}
+%
+% \section{\pkg{antanilipsum} implementation}
+%
+%    \begin{macrocode}
+%<*package>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<@@=kgl>
+%    \end{macrocode}
+%
+%
+%    \begin{macrocode}
+\ProvidesExplPackage
+  {antanilipsum}
+  {2020-05-05}
+  {0.8}
+  {Generate text in Mascettian style}
+%    \end{macrocode}
+%
+% A check to make sure that \pkg{expl3} is not too old
+%    \begin{macrocode}
+\@ifpackagelater { expl3 } { 2019/07/01 }
+  { }
+  {
+    \PackageError { antanilipsum } { Support~package~expl3~too~old }
+      {
+        You~need~to~update~your~installation~of~the~bundles~
+        'l3kernel'~and~'l3packages'.\MessageBreak
+        Loading~antanilipsum~will~abort!
+      }
+    \tex_endinput:D
+  }
+%    \end{macrocode}
+%
+% \subsection{Package options and required packages}
+% We declare the allowed options and choose by default
+% \texttt{par}. We also need to declare a function |\@@_number:n|
+% that is set by the \texttt{numbers} option; its default action is to
+% gobble its argument.
+%    \begin{macrocode}
+\DeclareOption { par }
+  {
+   \cs_set_protected:Nn \@@_star: { \c_space_tl }
+   \cs_set_protected:Nn \@@_nostar: { \par }
+  }
+
+\DeclareOption{ nopar }
+  {
+   \cs_set_protected:Nn \@@_star: { \par }
+   \cs_set_protected:Nn \@@_nostar: { \c_space_tl }
+  }
+
+\DeclareOption{ numbers }
+  {
+   \cs_set_protected:Nn \@@_number:n
+    {
+     #1\nobreak\enspace\textbullet\nobreak\enspace
+    }
+  }
+
+\bool_new:N \g_@@_makeindex_bool
+\bool_gset_false:N \g_@@_makeindex_bool
+\DeclareOption{ index }
+  { \bool_gset_true:N \g_@@_makeindex_bool }
+
+\cs_new_eq:NN \@@_number:n \use_none:n
+\ExecuteOptions{par}
+\ProcessOptions \scan_stop:
+%    \end{macrocode}
+%
+% \subsection{Messages}
+% We define two messages.
+%    \begin{macrocode}
+\msg_new:nnn {antanilipsum}{how-many}
+  {The~package~provides~paragraphs~1~to~#1.~
+   Values~outside~this~range~will~be~ignored.}
+\msg_new:nnnn {antanilipsum}{already-defined}
+  {Control~sequence~#1~already~defined.}
+  {The~control~sequence~#1~is~already~defined,~
+   I'll~ignore~it}
+%    \end{macrocode}
+%
+% \subsection{Variables and constants}
+% The |\l_@@_start_int| variable will contain the starting number for
+% processing, while |\l_@@_end_int| the ending number. The
+% |\g_@@_pars_seq| sequence will contain the pseudomascettian sentences
+% and |\g_@@_words_seq| that contains the words to index.
+%    \begin{macrocode}
+\int_new:N \l_@@_start_int
+\int_new:N \l_@@_end_int
+\seq_new:N \g_@@_pars_seq
+\seq_new:N \g_@@_words_seq
+\seq_new:N \l_@@_sentences_seq
+%    \end{macrocode}
+%
+% \subsection{User level commands}
+% There are two user level commands, \cs{antani} (with a *-variant) and \cs{antanidef}.
+%
+% \begin{function}{\antani}
+% The (optional) argument is described as before. We use the
+% \cs{SplitArgument} feature provided by \pkg{xparse} to decide
+% whether the `range form' has been specified. In the \cs{antani*} form
+% we reverse the logic.
+%    \begin{macrocode}
+\NewDocumentCommand{\antani}
+  {
+   s
+   >{\SplitArgument{1}{-}}O{1-7}
+   >{\SplitArgument{1}{-}}o}
+  {
+   \group_begin:
+   \IfBooleanTF{#1}
+     { \cs_set_eq:NN \@@_par: \@@_star: }
+     { \cs_set_eq:NN \@@_par: \@@_nostar: }
+   \IfNoValueTF{#3}
+     { \@@_process:nn #2 \@@_print: }
+     { \@@_process:nnnn #2 #3 \tl_use:N \l_tmpa_tl \@@_par: }
+   \group_end:
+  }
+%    \end{macrocode}
+%\changes{v0.8a}{2019/07/24}{Added a missing \cs{@@par:}}
+% \end{function}
+%
+% \begin{function}{\antanidef}
+% Sometimes one needs just a piece of text without implicit \cs{par}
+% attached, so we provide \cs{antanidef}. In a group we neutralize the
+% meaning of |\@@_number:n| and |\@@_par:| and define the control
+% sequence given as first argument to the pseudomascettian sentence being
+% the $k$th element of the sequence containing them, where $k$ is the
+% number given as second argument. If the control sequence is already
+% defined we issue an error and don't perform the definition.
+%    \begin{macrocode}
+\NewDocumentCommand{\antanidef}
+  {
+   m
+   m
+   >{\SplitArgument{1}{-}}O{1-50}
+  }
+  {
+   \group_begin:
+   \@@_define:nnnn {#1} {#2} #3
+   \group_end:
+  }
+%    \end{macrocode}
+% \end{function}
+%
+% \subsection{Internal functions}
+% \begin{function}{\@@_process:nn}
+% The function |\@@_process:nn| sets the temporary variables
+% |\l_@@_start_int| and |\l_@@_end_int|. If the optional argument to
+% \cs{antani} is missing they are already set to 1 and 7 respectively;
+% otherwise the argument has been split into its components; if the
+% argument was |[|$m$|]| we set both variables to $m$, otherwise it
+% was in the form |[|$m$|-|$n$|]| and we do the obvious action.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_process:nn
+  {
+   \int_set:Nn \l_@@_start_int {#1}
+   \tl_if_novalue:nTF {#2}
+     { \int_set:Nn \l_@@_end_int {#1} }
+     { \int_set:Nn \l_@@_end_int {#2} }
+  }
+\cs_new_protected:Nn \@@_process:nnnn
+  {
+   \tl_set:Nx \l_tmpa_tl { \seq_item:Nn \g_@@_pars_seq {#1} }
+   \tl_if_novalue:nTF {#4}
+    { \@@_extract:nnV {#3} {#3} \l_tmpa_tl }
+    { \@@_extract:nnV {#3} {#4} \l_tmpa_tl }
+  }
+%    \end{macrocode}
+% \end{function}
+% \changes{v0.7}{2017/11/16}{Use \cs{tl_if_novalue:nTF} instead of \cs{IfNoValueTF}}
+%
+% \begin{function}{\@@_print:,\@@_use:n}
+% The printing routine is in the function |\@@_print:|; we start a
+% loop printing item number $x$ in the sequence |\g_@@_pars_seq| for
+% all numbers $x$ in the specified range. The function |\@@_use:n|
+% function is a wrapper to be used with |\int_step_function:nnnN|:
+% it's passed a number as argument, builds the constant name
+% corresponding to it and produces the text. If the index entry is to
+% be issued, the appropriate element from |\g_@@_words_seq| is used;
+% the page reference might not be correct, though.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_print:
+  {
+   \int_step_function:nnnN
+     {\l_@@_start_int} {1} {\l_@@_end_int} \@@_use:n
+  }
+\cs_new:Nn \@@_use:n
+ {
+  \int_compare:nNnF { #1 } > { \seq_count:N \g_@@_pars_seq }
+   { \@@_number:n {#1} }
+  \bool_if:NT \g_@@_makeindex_bool
+    {
+     \use:x { \exp_not:N \index{ \seq_item:Nn \g_@@_words_seq {#1} } }
+    }
+  \seq_item:Nn \g_@@_pars_seq {#1}
+ }
+%    \end{macrocode}
+% \end{function}
+%
+% \begin{function}{\@@_newpara:n}
+% The |\@@_newpara:n| appends a new item to the sequence |\g_@@_pars_seq|
+% consisting of, say, \meta{text of the 42nd sentence}|\@@_par:|
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_newpara:n
+  { \seq_gput_right:Nn \g_@@_pars_seq {#1\@@_par:} }
+%    \end{macrocode}
+% \end{function}
+%
+% \begin{function}{\@@_newword:n}
+% The |\@@_newword:n| function appends a new item to the sequence
+% |\g_@@_words_seq| consisting of one word from the corresponding
+% paragraph.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_newword:n
+  { \seq_gput_right:Nn \g_@@_words_seq {#1} }
+%    \end{macrocode}
+% \end{function}
+%
+% \begin{function}{\@@define:nnnn}
+% The function |\@@define:nnnn| chooses the paragraph, then extracts the
+% requested sentences.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_define:nnnn
+  {
+   \cs_set_eq:NN \@@_number:n \use_none:n
+   \cs_set_eq:NN \@@_par: \prg_do_nothing:
+   \cs_if_exist:NTF #1
+     {
+      \msg_error:nnn {antanilipsum} {already-defined} {#1}
+     }
+     {
+      \tl_set:Nx \l_tmpa_tl { \seq_item:Nn \g_@@_pars_seq {#2} }
+      \tl_if_novalue:nTF {#4}
+       { \@@_extract:nnV {#3} {#3} \l_tmpa_tl }
+       { \@@_extract:nnV {#3} {#4} \l_tmpa_tl }
+      \cs_new:Npx #1 { \l_tmpa_tl }
+     }
+  }
+%    \end{macrocode}
+% \end{function}
+% \begin{function}{\@@_extract:nnn}
+% This function does the extraction by splitting the input at periods
+% and then adding the requested sentences to another sequence that
+% later can be used.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_extract:nnn
+  {
+   \seq_set_split:Nnn \l_@@_sentences_seq { . } {#3}
+   \seq_clear:N \l_tmpa_seq
+   \seq_indexed_map_inline:Nn \l_@@_sentences_seq
+    {
+     \int_compare:nT { #1 <= ##1 <= #2 }
+      {\seq_put_right:Nn \l_tmpa_seq { ##2 } }
+    }
+   \tl_set:Nx \l_tmpa_tl { \seq_use:Nn \l_tmpa_seq { .~ }. }
+  }
+\cs_generate_variant:Nn \@@_extract:nnn { nnV }
+%    \end{macrocode}
+% \end{function}
+%
+% \subsection{Defining the sentences}
+% We start a group where we set the category
+% code of the space to 10 so as not to be forced to write |~| for
+% spaces.
+%    \begin{macrocode}
+\group_begin:
+\char_set_catcode_space:n {`\ }
+%    \end{macrocode}
+%
+% Then we provide all of the sentences with the pattern
+% |\@@_newpara:n {|\meta{text}|}|
+%    \begin{macrocode}
+%replacemewithparagraphs
+%    \end{macrocode}
+%
+% Now we define the sequence of index words.
+%    \begin{macrocode}
+%replacemewithwords
+%    \end{macrocode}
+%
+% Finally we close the group and issue a message in the log file
+% stating how many sentences are available.
+%    \begin{macrocode}
+\group_end:
+\msg_info:nnx {antanilipsum} {how-many}
+  { \int_eval:n {\seq_count:N \g_@@_pars_seq} }
+%    \end{macrocode}
+%
+% \iffalse
+%</package>
+% \fi
+% \end{implementation}
+%
+% \PrintIndex

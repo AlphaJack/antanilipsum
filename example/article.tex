@@ -1,0 +1,25 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[index]{antanilipsum}
+\usepackage[italian]{babel}
+\usepackage[italian]{datetime2}
+%\usepackage{imakeidx}
+
+\title{Un pochino antani in prefettura. \\ Nel senso anafestico}
+\author{Conte Mascetti}
+\DTMsavedate{data}{1975-10-24}
+\date{\DTMusedate{data}}
+
+
+\begin{document}
+\maketitle
+\section*{Single paragraph}
+\antani[88]
+\section*{Short sentences}
+\begin{itemize}
+ \item \antani[19][2]
+ \item \antani[5][3]
+ \item \antani[2][5]
+\end{itemize}
+
+%\printindex
+\end{document}

@@ -1,8 +1,8 @@
-The `antanilipsum` package is an italian blind text generator that ouputs _supercazzole_, mocking nonsense phrases from the movie series Amici Miei, directed by Mario Monicelli.
+The `antanilipsum` package is an italian blind text generator that ouputs _supercazzole_, mocking nonsense phrases from the movie series Amici Miei, directed by Mario Monicelli.  
 
-The package is a modified version of `kantlipsum` by Enrico Gregorio that uses paragraphs from a variety of sources, including original movies, examples from the GitHub package [esseks/monicelli](https://github.com/esseks/monicelli), and online generators like [AntanIpsum](https://antanipsum.com).
+The package is a modified version of `kantlipsum` by Enrico Gregorio that uses paragraphs from a variety of sources, including original movies, examples from the GitHub package [esseks/monicelli](https://github.com/esseks/monicelli), and online generators like [AntanIpsum](https://antanipsum.com).  
 
-The package GitHub repo [AlphaJack/antanilipsum](https://github.com/AlphaJack/antanilipsum) is aimed to facilitate the creation of a custom blind text generator by simply replacing the paragraph files used to build this package.
+The package GitHub repo [AlphaJack/antanilipsum](https://github.com/AlphaJack/antanilipsum) is aimed to facilitate the creation of a custom blind text generator by simply replacing the paragraph files used to build this package.  
 
 This released is based on `kantilipsum` version 0.8a.
 

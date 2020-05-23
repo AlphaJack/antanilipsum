@@ -12,6 +12,11 @@ if [ -d buildfiles ]; then rm -r buildfiles; fi
 cp ../sources/template.dtx $package.dtx
 }
 
+readmeSubstitution(){
+sed -e '/%replacemewithctanreadme/ {' -e "r ../sources/readme-ctan.md" -e 'd' -e '}' -i $package.dtx
+echo "[OK] Replaced readme"
+}
+
 paragraphSubstitution(){
 for sourcefile in ../sources/par* ; do
     parNumber=$(($parNumber + $(grep -c '[^[:space:]]' $sourcefile)))
@@ -76,6 +81,7 @@ echo "[OK] Cleaned up"
 
 ############################################################################### COMMANDS
 safetyCheck
+readmeSubstitution
 paragraphSubstitution
 wordSubstitution
 compilation

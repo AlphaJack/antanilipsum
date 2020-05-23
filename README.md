@@ -77,7 +77,7 @@ Instructions unclear, got scappellamento a destra? Read `dist/antanilipsum.pdf`
 
 You may need to install the `csquotes` package if you don't have it. 
 
-Modify `sources/template.dtx`, `sources/words.txt` (used to generate the index) and the files you want inside the `sources` folder, make sure that:
+Modify `sources/template.dtx`, `sources/readme-ctan.md`, `sources/words.txt` (used to generate the index with `imakeidx`) and the files you want inside the `sources` folder, make sure that:
 
 - paragraph files begin with `par`;
 
@@ -109,7 +109,7 @@ If you want to make your own package, a batch replace of "antani" in `sources/te
 \turbocapitalismo
 ```
 
-Manual edit of `sources/template.dtx` is required if you want to modify the author of your package.
+Manual edits of `sources/template.dtx` and ``sources/readme-ctan.md`` are required if you want to modify the author and publish your package.
 
 
 
@@ -143,4 +143,4 @@ https://nonciclopedia.org/wiki/Supercazzola
 
 [LPPL 1.3c](https://www.latex-project.org/lppl/)
 
-A TD;DR summary is available [here](https://tldrlegal.com/license/latex-project-public-license-v1.3c-(lppl-1.3c))
+A TL;DR summary is available [here](https://tldrlegal.com/license/latex-project-public-license-v1.3c-(lppl-1.3c))

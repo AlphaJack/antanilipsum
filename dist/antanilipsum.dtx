@@ -8,7 +8,7 @@ The `antanilipsum` package is an italian blind text generator that ouputs _super
 The package is a modified version of `kantlipsum` by Enrico Gregorio that uses paragraphs from a variety of sources, including original movies, examples from the GitHub package [esseks/monicelli](https://github.com/esseks/monicelli), and online generators like [AntanIpsum](https://antanipsum.com).  
 
 The package GitHub repo [AlphaJack/antanilipsum](https://github.com/AlphaJack/antanilipsum) is aimed to facilitate the creation of a custom blind text generator by simply replacing the paragraph files used to build this package.  
-  
+
 This released is based on `kantilipsum` version 0.8a.
 
 Copyright 2020 Jack Coleman
@@ -35,7 +35,6 @@ lualatex antanilipsum.dtx
 ```
 
 It is also possible to use `tex` or `pdflatex` for the task, but `lualatex` [is advised](https://github.com/matlab2tikz/matlab2tikz/wiki/TeX-capacity-exceeded,-sorry) when using a large amount of paragraphs.
-
 %</readme>
 %<*internal>
 \fi
@@ -111,7 +110,11 @@ This work consists of the file  antanilipsum.dtx
 %
 % \GetFileInfo{\jobname.sty}
 %
-% \title{The \textsf{antanilipsum} package\\ Dummy text in Mascettian style}
+% \title{^^A
+%   The \textsf{antanilipsum} package\\ Dummy text in Mascettian style^^A
+%   \thanks{This file describes version \fileversion,
+%     last revised \filedate.}^^A
+% }
 %
 % \author{^^A
 %  Jack Coleman\thanks
@@ -125,7 +128,6 @@ This work consists of the file  antanilipsum.dtx
 %
 % \maketitle
 %
-%\changes{v0.8}{2020-05-05}{First released version}
 %
 % \begin{documentation}
 %
@@ -221,6 +223,13 @@ This work consists of the file  antanilipsum.dtx
 % Paragraphs and index words have been removed from \emph{kantlipsum.dtx} 
 % and are now added every time the build script is run.
 %
+% \subsection*{Changes from 0.8}
+%
+% Replaced \emph{kgl} prefixes with \emph{antani}.
+%
+% The CTAN readme has been removed from \emph{kantlipsum.dtx} 
+% and is now added every time the build script is run.
+%
 % \end{documentation}
 %
 % \begin{implementation}
@@ -232,15 +241,15 @@ This work consists of the file  antanilipsum.dtx
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-%<@@=kgl>
+%<@@=antani>
 %    \end{macrocode}
 %
 %
 %    \begin{macrocode}
 \ProvidesExplPackage
   {antanilipsum}
-  {2020-05-05}
-  {0.8}
+  {2020-05-23}
+  {0.8.1}
   {Generate text in Mascettian style}
 %    \end{macrocode}
 %
@@ -345,7 +354,6 @@ This work consists of the file  antanilipsum.dtx
    \group_end:
   }
 %    \end{macrocode}
-%\changes{v0.8a}{2019/07/24}{Added a missing \cs{@@par:}}
 % \end{function}
 %
 % \begin{function}{\antanidef}
@@ -396,7 +404,6 @@ This work consists of the file  antanilipsum.dtx
   }
 %    \end{macrocode}
 % \end{function}
-% \changes{v0.7}{2017/11/16}{Use \cs{tl_if_novalue:nTF} instead of \cs{IfNoValueTF}}
 %
 % \begin{function}{\@@_print:,\@@_use:n}
 % The printing routine is in the function |\@@_print:|; we start a

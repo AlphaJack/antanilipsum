@@ -55,7 +55,7 @@ Place `antanilipsum.sty` in your project folder
 
 \antani % prints the first 7 paragraphs
 
-\antani* % if "[par]" is set, it behaves like "[nopar]", and vice versa
+\antani* % if "[par]" is set, the asterisk behaves like "[nopar]", and vice versa
 
 \antani[1] % prints the paragraph #1
 
@@ -75,9 +75,11 @@ Instructions unclear, got scappellamento a destra? Read `dist/antanilipsum.pdf`
 
 ## Build
 
-You may need to install the `csquotes` package if you don't have it. 
+### Default process
 
-Modify `sources/template.dtx`, `sources/readme-ctan.md`, `sources/words.txt` (used to generate the index with `imakeidx`) and the files you want inside the `sources` folder, make sure that:
+You may need to install the `csquotes` and `alphalph` packages if you don't have them already. 
+
+Clone or download this repository, then modify `sources/template.dtx`, `sources/readme-ctan.md`, `sources/words.txt` (used to generate the index with `imakeidx`) and the files you want inside the `sources` folder, make sure that:
 
 - paragraph files begin with `par`;
 
@@ -86,10 +88,11 @@ Modify `sources/template.dtx`, `sources/readme-ctan.md`, `sources/words.txt` (us
 Go inside the `build` folder and run the `build.sh` script. It will:
 
 1. make a copy of `sources/template.dtx` called `build/antanilipsum.dtx`;
-1. read the files inside the `sources` folder and format their paragraphs to be compiled in $\LaTeX$ ;
+1. copy the content of `sources/readme-ctan.md` to `antanilipsum.dtx` replacing the string `%replacemewithctanreadme`;
+1. read the files starting with `par` inside the `sources` folder and format their paragraphs to be compiled in $\LaTeX$ ;
 1. write the modified paragraphs to `antanilipsum.dtx` replacing the string `%replacemewithparagraphs`;
 1. read the word list inside `sources/words.txt` and format it to be compiled in $\LaTeX$ ;
-1. write the modified word list to `antani.dtx` replacing the string `%replacemewithwords`;
+1. write the modified word list to `antanilipsum.dtx` replacing the string `%replacemewithwords`;
 1. compile the modified `antanilipsum.dtx` with `lualatex`;
 1. create a `build/dist` folder and move inside it
 	- `antanilipsum.dtx`, the file it just compiled;
@@ -100,7 +103,9 @@ Go inside the `build` folder and run the `build.sh` script. It will:
 
 These two folders will be automatically deleted the next time the script is run.  
 
-If you want to make your own package, a batch replace of "antani" in `sources/template.dtx` and `build/build.sh` with something of your choice, like "fuffaro", should be enough to make the package work with commands like:
+### Custom package
+
+If you want to make your own package, simply replace the value of `packageprefix` in `build/build.sh` with something of your choice, like "fuffaro".  This will make the package work with commands like:
 
 ```latex
 \usepackage{fuffarolipsum}
@@ -109,7 +114,7 @@ If you want to make your own package, a batch replace of "antani" in `sources/te
 \turbocapitalismo
 ```
 
-Manual edits of `sources/template.dtx` and ``sources/readme-ctan.md`` are required if you want to modify the author and publish your package.
+Manual edits of `sources/template.dtx` and ``sources/readme-ctan.md`` are required if you want to modify the description and publish your package.
 
 
 
